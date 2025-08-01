@@ -1,0 +1,173 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Component Templates
+
+## 📝 Code Examples
+
+### Proper Component Structure
+```vue
+<template>
+  <Card class="h-full">
+    <CardHeader>
+      <CardTitle>{{ title }}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p class="text-sm text-muted-foreground">{{ content }}</p>
+    </CardContent>
+    <CardFooter>
+      <Button variant="outline" size="sm" @click="handleAction">
+        🚤 Same boat
+      </Button>
+    </CardFooter>
+  </Card>
+</template>
+
+<script setup lang="ts">
+interface Props {
+  title: string
+  content: string
+}
+
+defineProps<Props>()
+
+const handleAction = () => {
+  console.log('Action triggered')
+}
+</script>
+```
+
+### Proper Page Structure
+```vue
+<template>
+  <div class="py-8 space-y-8">
+    <ScamsHero :scams="mockScams" />
+    <ScamsFilters :scams="mockScams" @filter-change="handleFilterChange" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ScamsItem v-for="scam in paginatedScams" :key="scam.id" :scam="scam" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { mockScams } from '~/lib/mock/scam-mock'
+
+definePageMeta({
+  layout: 'core'
+})
+
+// Page logic here
+</script>
+```
+
+### Layout Structure
+```vue
+<template>
+  <div class="min-h-screen bg-background">
+    <!-- Header -->
+    <header class="border-b border-border bg-card">
+      <div class="mx-auto max-w-screen-lg px-4 py-4">
+        <!-- Header content -->
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="mx-auto max-w-screen-lg px-4">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-border bg-card">
+      <div class="mx-auto max-w-screen-lg px-4 py-6">
+        <!-- Footer content -->
+      </div>
+    </footer>
+  </div>
+</template>
+```
+
+## 🎨 Styling Patterns
+
+### Card Components
+```vue
+<Card class="h-full">
+  <CardHeader class="pb-3">
+    <div class="flex items-start justify-between gap-2">
+      <CardTitle class="text-lg leading-tight line-clamp-2">
+        {{ title }}
+      </CardTitle>
+      <Badge variant="secondary" class="shrink-0 text-xs">
+        {{ type }}
+      </Badge>
+    </div>
+  </CardHeader>
+  
+  <CardContent class="space-y-4">
+    <!-- Content -->
+  </CardContent>
+  
+  <CardFooter class="pt-0">
+    <Button variant="outline" size="sm" class="w-full">
+      Action
+    </Button>
+  </CardFooter>
+</Card>
+```
+
+### Filter Components
+```vue
+<Card class="p-4">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="md:col-span-1">
+      <Input 
+        v-model="searchQuery"
+        placeholder="Search..."
+        class="w-full"
+      />
+    </div>
+    
+    <div class="md:col-span-1">
+      <Select v-model="selectedType">
+        <SelectTrigger>
+          <SelectValue placeholder="Type" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Types</SelectItem>
+          <SelectItem v-for="type in types" :key="type" :value="type">
+            {{ type }}
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  </div>
+</Card>
+```
+
+### Pagination Pattern
+```vue
+<Pagination 
+  v-slot="{ page }" 
+  :items-per-page="itemsPerPage" 
+  :total="totalItems" 
+  :default-page="currentPage"
+  @update:page="currentPage = $event"
+>
+  <PaginationContent v-slot="{ items }">
+    <PaginationPrevious />
+
+    <template v-for="(item, index) in items" :key="index">
+      <PaginationItem
+        v-if="item.type === 'page'"
+        :value="item.value"
+        :is-active="item.value === page"
+      >
+        {{ item.value }}
+      </PaginationItem>
+    </template>
+
+    <PaginationNext />
+  </PaginationContent>
+</Pagination>
+```

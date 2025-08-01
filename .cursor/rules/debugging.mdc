@@ -1,0 +1,70 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Debugging Guide
+
+## 🐛 Common Issues & Solutions
+
+### Component Not Found
+```bash
+# Check if component exists
+ls app/components/scams/
+cat .nuxt/components.d.ts | grep ComponentName
+```
+
+### TypeScript Errors
+- **Props missing**: Check component interface
+- **Auto-import issues**: Restart dev server
+- **Type mismatches**: Use proper TypeScript interfaces
+
+### Styling Issues
+- **Colors not working**: Check shadcn CSS variables
+- **Layout broken**: Use Tailwind classes, not custom CSS
+- **Responsive issues**: Use Tailwind responsive prefixes
+
+## 🔍 Debugging Checklist
+
+When something doesn't work:
+1. Check `.nuxt/components.d.ts` for auto-imports
+2. Verify component exists in correct directory
+3. Check TypeScript interfaces
+4. Restart dev server if auto-imports are stale
+5. Check shadcn component documentation
+6. Verify color variables in `main.css`
+
+## 🚨 Error Prevention
+
+### Before Creating Components
+1. **Check auto-imports**: Look in `.nuxt/components.d.ts`
+2. **Check existing files**: `ls app/components/`
+3. **Check shadcn components**: `ls app/components/ui/`
+
+### Common Mistakes
+- Creating duplicate components that already exist
+- Using custom hex colors instead of shadcn variables
+- Not checking auto-imports before creating components
+- Using wrong import patterns (`@/` instead of `~/`)
+
+## 🛠️ Quick Fixes
+
+### Restart Dev Server
+```bash
+# If auto-imports are stale
+bun run dev
+```
+
+### Check Component Availability
+```bash
+# See all auto-imported components
+cat .nuxt/components.d.ts | grep -i "scams"
+```
+
+### Verify File Structure
+```bash
+# Check component directories
+ls app/components/
+ls app/components/ui/
+ls app/components/scams/
+```

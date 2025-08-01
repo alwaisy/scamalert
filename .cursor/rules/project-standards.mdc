@@ -1,0 +1,155 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# ScamAlert Project Standards
+
+## 🏗️ Architecture
+
+### Tech Stack
+- **Framework**: Nuxt 3/4 with Vue 3 Composition API
+- **Styling**: Tailwind CSS with shadcn-vue components  
+- **Theme**: Light theme only (no dark mode)
+- **Package Manager**: Bun
+- **TypeScript**: Strict mode enabled
+
+### Directory Structure
+```
+app/
+├── components/
+│   ├── ui/          # shadcn components (auto-imported)
+│   └── scams/       # custom scam components
+├── layouts/         # Nuxt layouts
+├── pages/           # Nuxt pages with route groups
+├── lib/             # utilities, types, mock data
+└── assets/          # CSS, images
+```
+
+## 🎯 Component Standards
+
+### Auto-Import Check First
+**ALWAYS** check `.nuxt/components.d.ts` before creating new components:
+```bash
+cat .nuxt/components.d.ts | grep -i "component-name"
+```
+
+### Component Naming
+- **Custom Components**: Use PascalCase (e.g., `ScamsCard`, `ScamsFilters`)
+- **UI Components**: Use shadcn naming (e.g., `Card`, `Button`, `Badge`)
+- **Layout Components**: Use descriptive names (e.g., `CoreLayout`)
+
+### Component Structure
+```vue
+<template>
+  <!-- Template content -->
+</template>
+
+<script setup lang="ts">
+// Props & Emits
+interface Props {
+  // Define props
+}
+
+interface Emits {
+  // Define emits
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+// Computed & Methods
+const computedValue = computed(() => {
+  // Logic
+})
+
+const handleAction = () => {
+  // Action logic
+}
+</script>
+```
+
+## 🎨 Styling Standards
+
+### Color Usage
+- **ONLY** use shadcn CSS variables from `app/assets/css/main.css`
+- **NEVER** use custom hex colors
+- **Available colors**: `primary`, `secondary`, `muted`, `accent`, `destructive`, etc.
+
+### Layout Constraints
+- **Core Layout**: Max width 1024px (`max-w-screen-lg`)
+- **Responsive**: Mobile-first approach
+- **Spacing**: Use Tailwind spacing scale
+
+### Component Styling
+```vue
+<!-- ✅ Correct -->
+<Card class="bg-gradient-to-r from-primary/10 to-accent/10">
+<Badge variant="outline" class="text-xs">
+<Button variant="outline" size="sm">
+
+<!-- ❌ Wrong -->
+<div class="bg-[#ff0000]">  <!-- No custom hex -->
+<div class="w-[500px]">      <!-- No custom widths -->
+```
+
+## 📁 File Organization
+
+### Component Placement
+- **UI Components**: `app/components/ui/` (shadcn)
+- **Custom Components**: `app/components/[category]/`
+- **Layouts**: `app/layouts/`
+- **Pages**: `app/pages/` with route groups like `(core)/`
+
+### Import Patterns
+```typescript
+// ✅ Correct imports
+import type { Scam } from '~/lib/mock/types'
+import { mockScams } from '~/lib/mock/scam-mock'
+
+// ❌ Wrong imports
+import { Component } from '@/components'  // Don't use @ alias
+```
+
+## 🔧 Development Workflow
+
+### Before Creating Components
+1. **Check auto-imports**: Look in `.nuxt/components.d.ts`
+2. **Check existing files**: `ls app/components/`
+3. **Check shadcn components**: `ls app/components/ui/`
+
+### Component Creation Checklist
+- [ ] Check if component already exists
+- [ ] Use proper TypeScript interfaces
+- [ ] Follow shadcn patterns for UI components
+- [ ] Use only shadcn color variables
+- [ ] Add proper props validation
+- [ ] Include proper emits
+
+## 🚀 Best Practices
+
+### Vue 3 Patterns
+- **Composition API**: Use `<script setup>` syntax
+- **Reactivity**: Use `ref()`, `computed()`, `reactive()`
+- **Props**: Use TypeScript interfaces for type safety
+
+### Nuxt 3 Patterns
+- **Auto-imports**: Leverage Nuxt's auto-import system
+- **Layouts**: Use `definePageMeta({ layout: 'core' })`
+- **SEO**: Use `useHead()` for meta tags
+
+### shadcn-vue Patterns
+- **Components**: Use official shadcn components
+- **Variants**: Use built-in variants (default, outline, secondary, etc.)
+- **Sizes**: Use built-in sizes (sm, default, lg)
+
+## 🎯 Key Principles
+
+1. **Check before create**: Always verify existing components
+2. **Use shadcn**: Leverage existing UI components
+3. **TypeScript first**: Define proper interfaces
+4. **Consistent naming**: Follow established patterns
+5. **Color variables**: Only use shadcn CSS variables
+6. **Auto-imports**: Trust Nuxt's auto-import system
+7. **Mobile-first**: Design for mobile, enhance for desktop
+8. **Performance**: Use computed properties for expensive operations
