@@ -3,9 +3,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "~/*": ["./app/*"]
     }
   },
+  "exclude": [
+    "server/db/migrations",
+    "server/db/database.db",
+    "server/db/database.db-journal"
+  ],
   "files": [],
   "references": [
     {

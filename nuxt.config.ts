@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/fonts",
     "shadcn-nuxt",
-    "@nuxtjs/kinde",
+    "@pinia/nuxt",
   ],
 
   css: ["~/assets/css/main.css"],
@@ -19,6 +19,14 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  nitro: {
+    experimental: {
+      wasm: true,
+    },
+  },
+
+  ssr: false, // Try disabling SSR to see if this helps with cookie handling
 
   shadcn: {
     /**
@@ -32,9 +40,17 @@ export default defineNuxtConfig({
     componentDir: "./app/components/ui",
   },
 
-  routeRules: {
-    "/submit": {
-      appMiddleware: ["auth-logged-in"],
+  runtimeConfig: {
+    // Private (server-side only)
+    tursoDatabaseUrl: process.env.TURSO_DATABASE_URL,
+    tursoAuthToken: process.env.TURSO_AUTH_TOKEN,
+    imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    imagekitUrlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+
+    // Public (client-side accessible)
+    public: {
+      clientUrl: process.env.NUXT_PUBLIC_CLIENT_URL,
     },
   },
 });

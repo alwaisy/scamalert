@@ -1,6 +1,7 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import * as schema from "./schema";
+import * as scamSchema from "./scam-schema";
+import * as userSchema from "./user-schema";
 
 // Create libsql client
 const client = createClient({
@@ -8,8 +9,14 @@ const client = createClient({
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
-// Create drizzle instance
-export const db = drizzle(client, { schema });
+// Create drizzle instance with both schemas
+export const db = drizzle(client, {
+  schema: {
+    ...userSchema,
+    ...scamSchema,
+  },
+});
 
 // Export schema for convenience
-export * from "./schema";
+export * from "./scam-schema";
+export * from "./user-schema";

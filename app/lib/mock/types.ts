@@ -19,6 +19,7 @@ export interface Victim {
 // Scam entity - main entity
 export interface Scam {
   id: string;
+  scam_id: string; // 6-character nano-id format: scam-{6-char-nano-id}
   title: string;
   content: string;
   type: string; // category

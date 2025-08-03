@@ -2,7 +2,10 @@
   <Card
     class="py-4 cursor-pointer shadow-none hover:shadow-md transition-shadow"
   >
-    <NuxtLink :to="scamUrl" class="h-full flex flex-col gap-y-6">
+    <NuxtLink
+      :to="`/scams/${props.scam.scamId}`"
+      class="h-full flex flex-col gap-y-6"
+    >
       <CardHeader class="px-4">
         <CardTitle class="text-lg leading-tight">
           {{ scam.title }}
@@ -41,16 +44,13 @@
 
     <CardFooter class="pt-0 mt-auto px-4">
       <div class="flex gap-2 w-full justify-between">
-        <Button
-          variant="outline"
-          size="sm"
-          class="gap-2"
-          @click.stop="handleUpvote"
-        >
-          <Icon name="icon-park-outline:heart" class="w-4 h-4" />
-          <span class="text-xs">Feel your pain</span>
-          <span class="font-semibold text-xs">{{ scam.upvotes }}</span>
-        </Button>
+        <SharedUpvoteButton
+          :upvotes="scam.upvotesCount"
+          :scam-id="scam.scamId"
+          :is-upvoted="scam.isUpvoted"
+          @update:upvotes="handleUpvotesUpdate"
+          @update:is-upvoted="handleIsUpvotedUpdate"
+        />
         <Button
           variant="outline"
           size="sm"
@@ -66,13 +66,19 @@
 
 <script setup lang="ts">
 import { toast } from "vue-sonner";
-import type { Scam } from "~/lib/mock/types";
+import type { ScamListItem } from "~/lib/types";
 
 interface Props {
-  scam: Scam;
+  scam: ScamListItem;
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits<{
+  "update:scam": [scam: ScamListItem];
+}>();
+
+const config = useRuntimeConfig();
+const clientUrl = config.public.clientUrl;
 
 const formatScamType = (type: string) => {
   return type
@@ -81,27 +87,31 @@ const formatScamType = (type: string) => {
     .join(" ");
 };
 
-const handleUpvote = () => {
-  // TODO: Implement upvote functionality
-  console.log("Upvoted!");
+const handleUpvotesUpdate = (count: number) => {
+  // Update the scam object with new upvote count
+  const updatedScam = {
+    ...props.scam,
+    upvotesCount: count,
+  };
+  emit("update:scam", updatedScam);
 };
 
-const scamUrl = `/scams/${props.scam.id}`;
+const handleIsUpvotedUpdate = (value: boolean) => {
+  // Update the scam object with new upvote status
+  const updatedScam = {
+    ...props.scam,
+    isUpvoted: value,
+  };
+  emit("update:scam", updatedScam);
+};
 
-const router = useRouter();
+const scamUrl = `${clientUrl}/scams/${props.scam.scamId}`;
 
 const handleShare = async () => {
   try {
-    const fullUrl = router.resolve(scamUrl).href;
-    await navigator.clipboard.writeText(fullUrl);
+    await navigator.clipboard.writeText(scamUrl);
 
-    toast("Scam URL copied", {
-      description: "Scam URL copied to clipboard",
-      action: {
-        label: "View",
-        onClick: () => window.open(fullUrl, "_blank"),
-      },
-    });
+    toast("Scam URL copied");
   } catch (error) {
     console.error("Failed to copy:", error);
     toast("Failed to copy", {

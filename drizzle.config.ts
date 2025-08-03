@@ -5,7 +5,7 @@ import type { Config } from "drizzle-kit";
 config();
 
 export default {
-  schema: "./server/db/schema.ts",
+  schema: ["./server/db/user-schema.ts", "./server/db/scam-schema.ts"],
   out: "./server/db/migrations",
   dialect: "turso",
   dbCredentials: {

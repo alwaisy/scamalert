@@ -52,19 +52,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Scam } from "~/lib/mock/types";
-
 interface Props {
-  scams: Scam[];
+  totalScams: number;
+  totalUpvotes: number;
+  totalComments: number;
 }
 
-const props = defineProps<Props>();
-
-const totalScams = computed(() => props.scams.length);
-const totalUpvotes = computed(() =>
-  props.scams.reduce((sum, scam) => sum + scam.upvotes, 0)
-);
-const totalComments = computed(() =>
-  props.scams.reduce((sum, scam) => sum + scam.comments.length, 0)
-);
+defineProps<Props>();
 </script>

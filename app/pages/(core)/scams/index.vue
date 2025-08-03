@@ -1,119 +1,217 @@
 <template>
-  <div class="py-8 space-y-8">
-    <!-- Hero Section -->
-    <ScamsHero :scams="mockScams" />
+  <NuxtErrorBoundary @error="handleError">
+    <div class="py-8 space-y-8">
+      <!-- Hero Section -->
+      <ScamsHero
+        :total-scams="data?.length || 0"
+        :total-upvotes="data?.reduce((sum, scam) => sum + ((scam as any).upvotesCount || 0), 0) || 0"
+        :total-comments="data?.reduce((sum, scam) => sum + ((scam as any).commentsCount || 0), 0) || 0"
+      />
 
-    <!-- Filters -->
-    <ScamsFilters
-      :scams="mockScams"
-      :filters="filters"
-      @filter-change="handleFilterChange"
-      @open-sheet="sheetOpen = true"
-    />
+      <!-- Filters -->
+      <ScamsFilters
+        :scam-types="data?.map(scam => (scam as any).type).filter(Boolean) || []"
+        :platforms="data?.flatMap(scam => (scam as any).platforms || []).filter(Boolean) || []"
+        :locations="data?.flatMap(scam => (scam as any).locations || []).filter(Boolean) || []"
+        :filters="filters"
+        @filter-change="handleFilterChange"
+        @open-sheet="sheetOpen = true"
+      />
 
-    <!-- Filter Sheet -->
-    <ScamsFilterSheet
-      :open="sheetOpen"
-      :scams="mockScams"
-      :filters="filters"
-      @update:open="sheetOpen = $event"
-      @filter-change="handleFilterChange"
-    />
+      <!-- Filter Sheet -->
+      <ScamsFilterSheet
+        :open="sheetOpen"
+        :scam-types="data?.map(scam => (scam as any).type).filter(Boolean) || []"
+        :platforms="data?.flatMap(scam => (scam as any).platforms || []).filter(Boolean) || []"
+        :locations="data?.flatMap(scam => (scam as any).locations || []).filter(Boolean) || []"
+        :filters="filters"
+        @update:open="sheetOpen = $event"
+        @filter-change="handleFilterChange"
+      />
 
-    <!-- Results Count -->
-    <!-- <div class="text-sm text-muted-foreground">
-      Showing {{ filteredScams.length }} of {{ mockScams.length }} scams
-    </div> -->
+      <!-- Loading State -->
+      <div v-if="pending" class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Card v-for="i in 6" :key="i" class="p-6">
+            <div class="space-y-4">
+              <Skeleton class="h-4 w-3/4" />
+              <Skeleton class="h-4 w-full" />
+              <Skeleton class="h-4 w-2/3" />
+            </div>
+          </Card>
+        </div>
+      </div>
 
-    <!-- Scams Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <ScamsItem v-for="scam in paginatedScams" :key="scam.id" :scam="scam" />
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-12">
+        <div class="text-destructive mb-4">
+          <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-4" />
+          <h2 class="text-xl font-semibold">Failed to Load Scams</h2>
+          <p class="text-muted-foreground mt-2">
+            {{ error?.message || "An unexpected error occurred" }}
+          </p>
+        </div>
+        <Button class="mt-4" @click="refresh"> Try Again </Button>
+      </div>
+
+      <!-- Results Count -->
+      <div
+        v-else-if="pagination && data && data.length > 0"
+        class="text-sm text-muted-foreground"
+      >
+        Showing {{ data.length }} of {{ pagination.total }} scams
+      </div>
+
+      <!-- Scams Grid -->
+      <div
+        v-else-if="data && data.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <ScamsItem
+          v-for="scam in data"
+          :key="scam.id"
+          :scam="scam"
+          @update:scam="handleScamUpdate"
+        />
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else-if="!pending && (!data || data.length === 0)"
+        class="text-center py-12"
+      >
+        <Icon
+          name="lucide:search"
+          class="w-12 h-12 mx-auto mb-4 text-muted-foreground"
+        />
+        <h2 class="text-xl font-semibold">No Scams Found</h2>
+        <p class="text-muted-foreground mt-2">
+          Try adjusting your filters or search terms.
+        </p>
+      </div>
+
+      <!-- Pagination -->
+      <ScamsPagination
+        v-if="pagination && pagination.totalPages > 1"
+        :current-page="pagination.page"
+        :total-pages="pagination.totalPages"
+        @update:current-page="handlePageChange"
+      />
     </div>
 
-    <!-- Pagination -->
-    <ScamsPagination
-      :current-page="currentPage"
-      :total-pages="totalPages"
-      @update:current-page="currentPage = $event"
-    />
-  </div>
+    <!-- Error Template -->
+    <template #error="{ error: templateError, clearError }">
+      <div class="text-center py-12">
+        <div class="text-destructive mb-4">
+          <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-4" />
+          <h2 class="text-xl font-semibold">Something went wrong</h2>
+          <p class="text-muted-foreground mt-2">
+            {{ templateError?.message || "An unexpected error occurred" }}
+          </p>
+        </div>
+        <div class="flex gap-2 justify-center">
+          <Button class="mt-4" @click="clearError"> Try Again </Button>
+          <Button class="mt-4" variant="outline" @click="navigateTo('/scams')">
+            Go to Scams
+          </Button>
+        </div>
+      </div>
+    </template>
+  </NuxtErrorBoundary>
 </template>
 
 <script setup lang="ts">
-import { SCAMS_PER_PAGE } from "~/config/project";
-import { mockScams } from "~/lib/mock/scam-mock";
+import type { Pagination, ScamFilters, ScamListItem } from "~/lib/types";
 
 definePageMeta({
   layout: "core",
+  middleware: ["auth-logged-in"],
 });
 
-// Filters
-const filters = ref({
-  search: "",
-  type: "all",
-  platform: "all",
-  location: "all",
-});
+// API composable
+const { fetchScams } = useScams();
 
-// Pagination
-const currentPage = ref(1);
-const itemsPerPage = SCAMS_PER_PAGE;
+// Route and query
+const route = useRoute();
+const router = useRouter();
+
+// Filters from query params
+const filters = computed<ScamFilters>(() => ({
+  search: (route.query.search as string) || undefined,
+  type: (route.query.type as string) || undefined,
+  location: (route.query.location as string) || undefined,
+  status: (route.query.status as string) || "approved",
+  sortBy: (route.query.sortBy as string) || "createdAt",
+  sortOrder: (route.query.sortOrder as "asc" | "desc") || "desc",
+  page: parseInt(route.query.page as string) || 1,
+  limit: parseInt(route.query.limit as string) || 20,
+}));
 
 // Sheet state
 const sheetOpen = ref(false);
 
-// Filter scams based on current filters
-const filteredScams = computed(() => {
-  let filtered = mockScams;
-
-  // Search filter
-  if (filters.value.search) {
-    const searchLower = filters.value.search.toLowerCase();
-    filtered = filtered.filter(
-      (scam) =>
-        scam.title.toLowerCase().includes(searchLower) ||
-        scam.content.toLowerCase().includes(searchLower) ||
-        scam.victim.username.toLowerCase().includes(searchLower)
-    );
+// Use useAsyncData for data fetching with built-in caching
+const { data, pending, error, refresh } = await useAsyncData(
+  "scams",
+  () => fetchScams(filters.value),
+  {
+    watch: [filters],
+    server: true, // Enable SSR for better SEO
+    default: () => [], // Provide default empty array
+    transform: (response) => response as ScamListItem[], // Transform to proper type
   }
-
-  // Type filter
-  if (filters.value.type !== "all") {
-    filtered = filtered.filter((scam) => scam.type === filters.value.type);
-  }
-
-  // Platform filter
-  if (filters.value.platform !== "all") {
-    filtered = filtered.filter((scam) =>
-      scam.platform.includes(filters.value.platform)
-    );
-  }
-
-  // Location filter
-  if (filters.value.location !== "all") {
-    filtered = filtered.filter((scam) =>
-      scam.location.includes(filters.value.location)
-    );
-  }
-
-  return filtered;
-});
-
-// Pagination calculations
-const totalPages = computed(() =>
-  Math.ceil(filteredScams.value.length / itemsPerPage)
 );
 
-const paginatedScams = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return filteredScams.value.slice(start, end);
+console.log(
+  "data for upvotes",
+  data.value?.filter((scam) => scam.isUpvoted)
+);
+
+// Prefetch data for better performance
+onServerPrefetch(async () => {
+  await fetchScams(filters.value);
 });
 
-// Reset to page 1 when filters change
-const handleFilterChange = (newFilters: typeof filters.value) => {
-  filters.value = newFilters;
-  currentPage.value = 1;
+// Extract pagination from the API response
+const pagination = computed<Pagination | null>(() => {
+  // This would need to be adjusted based on your API response structure
+  return null;
+});
+
+// Handle filter changes
+const handleFilterChange = (newFilters: Partial<ScamFilters>) => {
+  const updatedFilters = { ...filters.value, ...newFilters, page: 1 };
+
+  // Update URL with new filters
+  router.push({
+    query: Object.fromEntries(
+      Object.entries(updatedFilters).filter(
+        ([_, value]) => value !== undefined && value !== null && value !== ""
+      )
+    ),
+  });
+};
+
+// Handle page changes
+const handlePageChange = (page: number) => {
+  router.push({
+    query: { ...route.query, page: page.toString() },
+  });
+};
+
+// Handle scam updates (upvotes, etc.)
+const handleScamUpdate = (updatedScam: ScamListItem) => {
+  if (data.value) {
+    const index = data.value.findIndex((scam) => scam.id === updatedScam.id);
+    if (index !== -1) {
+      data.value[index] = updatedScam;
+    }
+  }
+};
+
+// Error handler
+const handleError = (err: Error) => {
+  console.error("Scams page error:", err);
 };
 
 // SEO
@@ -123,7 +221,7 @@ useHead({
     {
       name: "description",
       content:
-        "Browse real scam reports from Pakistan. Learn from others' experiences to protect yourself from fraud, fake jobs, romance scams, and more.",
+        "Browse and search through real scam reports from Pakistan. Learn about different types of scams and how to protect yourself.",
     },
   ],
 });

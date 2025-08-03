@@ -120,51 +120,27 @@
 </template>
 
 <script setup lang="ts">
-import type { Scam } from "~/lib/mock/types";
+import type { ScamFilters } from "~/lib/types";
 
 interface Props {
   open: boolean;
-  scams: Scam[];
-  filters: {
-    search: string;
-    type: string;
-    platform: string;
-    location: string;
-  };
+  scamTypes: string[];
+  platforms: string[];
+  locations: string[];
+  filters: ScamFilters;
 }
 
 interface Emits {
   (e: "update:open", value: boolean): void;
-  (
-    e: "filter-change",
-    filters: {
-      search: string;
-      type: string;
-      platform: string;
-      location: string;
-    }
-  ): void;
+  (e: "filter-change", filters: Partial<ScamFilters>): void;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const selectedType = ref(props.filters.type);
-const selectedPlatform = ref(props.filters.platform);
-const selectedLocation = ref(props.filters.location);
-
-// Extract unique values from scams
-const scamTypes = computed(() => {
-  return [...new Set(props.scams.map((scam) => scam.type))];
-});
-
-const platforms = computed(() => {
-  return [...new Set(props.scams.flatMap((scam) => scam.platform))];
-});
-
-const locations = computed(() => {
-  return [...new Set(props.scams.flatMap((scam) => scam.location))];
-});
+const selectedType = ref(props.filters.type || "all");
+const selectedPlatform = ref(props.filters.location || "all"); // Using location as platform for now
+const selectedLocation = ref(props.filters.location || "all");
 
 const formatScamType = (type: string) => {
   return type
@@ -176,9 +152,9 @@ const formatScamType = (type: string) => {
 const emitFilters = () => {
   emit("filter-change", {
     search: props.filters.search, // Keep search from parent
-    type: selectedType.value,
-    platform: selectedPlatform.value,
-    location: selectedLocation.value,
+    type: selectedType.value === "all" ? undefined : selectedType.value,
+    location:
+      selectedLocation.value === "all" ? undefined : selectedLocation.value,
   });
 };
 

@@ -7,6 +7,7 @@ const UserStatusEnum = ["active", "revoked"] as const;
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   email: text("email").notNull().unique(),
+  password: text("password").notNull(), // Hashed password
   username: text("username").notNull().unique(),
   status: text("status", { enum: UserStatusEnum }).notNull().default("active"),
   suspendReason: text("suspend_reason"),

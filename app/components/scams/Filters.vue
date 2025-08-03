@@ -98,51 +98,27 @@
 </template>
 
 <script setup lang="ts">
-import type { Scam } from "~/lib/mock/types";
+import type { ScamFilters } from "~/lib/types";
 
 interface Props {
-  scams: Scam[];
-  filters: {
-    search: string;
-    type: string;
-    platform: string;
-    location: string;
-  };
+  scamTypes: string[];
+  platforms: string[];
+  locations: string[];
+  filters: ScamFilters;
 }
 
 interface Emits {
-  (
-    e: "filter-change",
-    filters: {
-      search: string;
-      type: string;
-      platform: string;
-      location: string;
-    }
-  ): void;
+  (e: "filter-change", filters: Partial<ScamFilters>): void;
   (e: "open-sheet"): void;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const searchQuery = ref(props.filters.search);
-const selectedType = ref(props.filters.type);
-const selectedPlatform = ref(props.filters.platform);
-const selectedLocation = ref(props.filters.location);
-
-// Extract unique values from scams
-const scamTypes = computed(() => {
-  return [...new Set(props.scams.map((scam) => scam.type))];
-});
-
-const platforms = computed(() => {
-  return [...new Set(props.scams.flatMap((scam) => scam.platform))];
-});
-
-const locations = computed(() => {
-  return [...new Set(props.scams.flatMap((scam) => scam.location))];
-});
+const searchQuery = ref(props.filters.search || "");
+const selectedType = ref(props.filters.type || "all");
+const selectedPlatform = ref(props.filters.location || "all"); // Using location as platform for now
+const selectedLocation = ref(props.filters.location || "all");
 
 const formatScamType = (type: string) => {
   return type
@@ -153,10 +129,10 @@ const formatScamType = (type: string) => {
 
 const emitFilters = () => {
   emit("filter-change", {
-    search: searchQuery.value,
-    type: selectedType.value,
-    platform: selectedPlatform.value,
-    location: selectedLocation.value,
+    search: searchQuery.value || undefined,
+    type: selectedType.value === "all" ? undefined : selectedType.value,
+    location:
+      selectedLocation.value === "all" ? undefined : selectedLocation.value,
   });
 };
 
@@ -179,10 +155,9 @@ const handleLocationChange = () => {
 // Calculate active filters count
 const activeFiltersCount = computed(() => {
   let count = 0;
-  if (props.filters.search.trim()) count++;
-  if (props.filters.type !== "all") count++;
-  if (props.filters.platform !== "all") count++;
-  if (props.filters.location !== "all") count++;
+  if (props.filters.search?.trim()) count++;
+  if (props.filters.type && props.filters.type !== "all") count++;
+  if (props.filters.location && props.filters.location !== "all") count++;
   return count;
 });
 </script>

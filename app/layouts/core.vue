@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-background">
+  <div class="min-h-screen bg-background flex flex-col">
     <!-- Header -->
-    <header class="border-b border-border bg-card">
+    <header class="border-b border-border bg-card flex-shrink-0">
       <div class="mx-auto max-w-screen-lg px-4 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
@@ -17,6 +17,12 @@
               Scams
             </NuxtLink>
             <NuxtLink
+              to="/guide"
+              class="text-foreground hover:text-primary transition-colors"
+            >
+              Guide
+            </NuxtLink>
+            <NuxtLink
               to="/about"
               class="text-foreground hover:text-primary transition-colors"
             >
@@ -24,32 +30,14 @@
             </NuxtLink>
             <div class="flex items-center space-x-2">
               <!-- Logged out state -->
-              <template v-if="!$auth.loggedIn">
-                <NuxtLink
-                  to="/api/login"
-                  external
-                  class="text-foreground hover:text-primary transition-colors text-sm"
-                >
-                  Sign in
-                </NuxtLink>
-                <NuxtLink
-                  to="/api/register"
-                  external
-                  class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Sign up
-                </NuxtLink>
-              </template>
-
+              <NuxtLink
+                to="/submit"
+                class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Share Experience
+              </NuxtLink>
               <!-- Logged in state -->
-              <template v-else>
-                <NuxtLink
-                  to="/submit"
-                  class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Share Experience
-                </NuxtLink>
-
+              <template v-if="isAuthenticated">
                 <!-- User Menu Dropdown -->
                 <DropdownMenu>
                   <DropdownMenuTrigger as-child>
@@ -62,14 +50,18 @@
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
                       <Icon name="lucide:user" class="w-4 h-4 mr-2" />
-                      {{ $auth.user?.email }}
+                      {{ user?.username }}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem as-child>
+                      <NuxtLink to="/settings">
+                        <Icon name="lucide:settings" class="w-4 h-4 mr-2" />
+                        Settings
+                      </NuxtLink>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem @click="handleLogout">
                       <Icon name="lucide:log-out" class="w-4 h-4 mr-2" />
-                      <NuxtLink to="/api/logout" external class="w-full">
-                        Sign out
-                      </NuxtLink>
+                      Sign out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -81,17 +73,49 @@
     </header>
 
     <!-- Main Content -->
-    <main class="mx-auto max-w-screen-lg px-4">
+    <main class="flex-1 mx-auto max-w-screen-lg px-4 w-full">
       <slot />
     </main>
 
     <!-- Footer -->
-    <footer class="mt-16 border-t border-border bg-card">
+    <footer class="border-t border-border bg-card flex-shrink-0">
       <div class="mx-auto max-w-screen-lg px-4 py-6">
-        <div class="text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 ScamAlert. Stay safe, stay informed.</p>
+        <div
+          class="flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <div class="text-center md:text-left">
+            <p class="text-sm text-muted-foreground">
+              &copy; 2024 ScamAlert. Stay safe, stay informed.
+            </p>
+          </div>
+
+          <!-- Auth Links (only show when not authenticated) -->
+          <div v-if="!isAuthenticated" class="flex items-center gap-4">
+            <NuxtLink
+              to="/login"
+              class="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Sign in
+            </NuxtLink>
+            <NuxtLink
+              to="/register"
+              class="text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              Sign up
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </footer>
   </div>
 </template>
+
+<script setup lang="ts">
+const { user, isAuthenticated, logout } = useAuthStore();
+const router = useRouter();
+
+const handleLogout = async () => {
+  await logout();
+  await router.push("/");
+};
+</script>

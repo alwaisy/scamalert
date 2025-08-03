@@ -20,17 +20,18 @@
             <label for="scamType" class="text-sm font-medium text-foreground">
               Scam Type *
             </label>
-            <Select v-model="form.scamType" required>
+            <Select v-model="form.type" required>
               <SelectTrigger>
                 <SelectValue placeholder="Select scam type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="phishing">Phishing</SelectItem>
-                <SelectItem value="investment">Investment Scam</SelectItem>
-                <SelectItem value="romance">Romance Scam</SelectItem>
-                <SelectItem value="tech-support">Tech Support Scam</SelectItem>
-                <SelectItem value="lottery">Lottery/Prize Scam</SelectItem>
-                <SelectItem value="job">Job Scam</SelectItem>
+                <SelectItem value="mobile-banking">Mobile Banking</SelectItem>
+                <SelectItem value="job-scams">Job Scams</SelectItem>
+                <SelectItem value="property">Property</SelectItem>
+                <SelectItem value="online-shopping">Online Shopping</SelectItem>
+                <SelectItem value="investment">Investment</SelectItem>
+                <SelectItem value="education">Education</SelectItem>
+                <SelectItem value="romance">Romance</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
@@ -51,112 +52,200 @@
 
           <!-- Description -->
           <div class="space-y-2">
-            <label
-              for="description"
-              class="text-sm font-medium text-foreground"
-            >
+            <label for="content" class="text-sm font-medium text-foreground">
               Your Experience *
             </label>
             <Textarea
-              id="description"
-              v-model="form.description"
+              id="content"
+              v-model="form.content"
               placeholder="Describe what happened, how you encountered the scam, and any red flags you noticed..."
-              rows="6"
+              class="min-h-[200px]"
               required
             />
           </div>
 
-          <!-- Contact Method -->
+          <!-- Platforms -->
           <div class="space-y-2">
-            <label
-              for="contactMethod"
-              class="text-sm font-medium text-foreground"
-            >
-              How did they contact you? *
+            <label for="platforms" class="text-sm font-medium text-foreground">
+              Platforms Used *
             </label>
-            <Select v-model="form.contactMethod" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select contact method" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="email">Email</SelectItem>
-                <SelectItem value="phone">Phone Call</SelectItem>
-                <SelectItem value="sms">SMS/Text</SelectItem>
-                <SelectItem value="social-media">Social Media</SelectItem>
-                <SelectItem value="website">Website</SelectItem>
-                <SelectItem value="in-person">In Person</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <!-- Financial Loss -->
-          <div class="space-y-2">
-            <label
-              for="financialLoss"
-              class="text-sm font-medium text-foreground"
-            >
-              Did you experience financial loss?
-            </label>
-            <Select v-model="form.financialLoss">
-              <SelectTrigger>
-                <SelectValue placeholder="Select option" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="yes">Yes</SelectItem>
-                <SelectItem value="no">No</SelectItem>
-                <SelectItem value="attempted"
-                  >Attempted but prevented</SelectItem
+            <div class="space-y-2">
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label
+                  v-for="platform in availablePlatforms"
+                  :key="platform"
+                  class="flex items-center space-x-2 cursor-pointer"
                 >
-              </SelectContent>
-            </Select>
+                  <Checkbox
+                    :model-value="form.platforms.includes(platform)"
+                    class="rounded"
+                    @update:model-value="
+                      (checked) => {
+                        if (checked) {
+                          if (!form.platforms.includes(platform)) {
+                            form.platforms.push(platform);
+                          }
+                        } else {
+                          form.platforms = form.platforms.filter(
+                            (p) => p !== platform
+                          );
+                        }
+                      }
+                    "
+                  />
+                  <span class="text-sm">{{ platform }}</span>
+                </label>
+              </div>
+            </div>
           </div>
 
-          <!-- Loss Amount (if applicable) -->
-          <div v-if="form.financialLoss === 'yes'" class="space-y-2">
-            <label for="lossAmount" class="text-sm font-medium text-foreground">
-              Approximate loss amount
-            </label>
-            <Input
-              id="lossAmount"
-              v-model="form.lossAmount"
-              type="number"
-              placeholder="Enter amount"
-              min="0"
-            />
-          </div>
-
-          <!-- Date -->
+          <!-- Locations -->
           <div class="space-y-2">
-            <label for="date" class="text-sm font-medium text-foreground">
-              When did this happen? *
+            <label for="locations" class="text-sm font-medium text-foreground">
+              Locations *
             </label>
-            <Input id="date" v-model="form.date" type="date" required />
+            <div class="space-y-2">
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label
+                  v-for="location in availableLocations"
+                  :key="location"
+                  class="flex items-center space-x-2 cursor-pointer"
+                >
+                  <Checkbox
+                    :model-value="form.locations.includes(location)"
+                    class="rounded"
+                    @update:model-value="
+                      (checked) => {
+                        if (checked) {
+                          if (!form.locations.includes(location)) {
+                            form.locations.push(location);
+                          }
+                        } else {
+                          form.locations = form.locations.filter(
+                            (l) => l !== location
+                          );
+                        }
+                      }
+                    "
+                  />
+                  <span class="text-sm">{{ location }}</span>
+                </label>
+              </div>
+              <Input
+                v-model="customLocation"
+                placeholder="Add custom location"
+                @keyup.enter="addCustomLocation"
+              />
+            </div>
           </div>
 
-          <!-- Location -->
+          <!-- Anonymous Post -->
           <div class="space-y-2">
-            <label for="location" class="text-sm font-medium text-foreground">
-              Location (City, Country)
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <Checkbox v-model="form.isAnonymous" class="rounded" />
+              <span class="text-sm font-medium text-foreground">
+                Post anonymously
+              </span>
             </label>
-            <Input
-              id="location"
-              v-model="form.location"
-              placeholder="e.g., New York, USA"
-            />
           </div>
 
-          <!-- Additional Tips -->
+          <!-- Amount Lost -->
           <div class="space-y-2">
-            <label for="tips" class="text-sm font-medium text-foreground">
-              Tips for others (optional)
+            <label for="amountLost" class="text-sm font-medium text-foreground">
+              Amount Lost (optional)
             </label>
-            <Textarea
-              id="tips"
-              v-model="form.tips"
-              placeholder="What advice would you give to others to avoid this scam?"
-              rows="3"
-            />
+            <div class="space-y-2">
+              <div class="flex items-center space-x-2">
+                <Checkbox v-model="form.hasFinancialLoss" class="rounded" />
+                <span class="text-sm text-foreground">
+                  I experienced financial loss
+                </span>
+              </div>
+              <Input
+                v-if="form.hasFinancialLoss"
+                id="amountLost"
+                v-model="form.amountLost"
+                type="number"
+                placeholder="Enter amount in PKR"
+                min="0"
+                step="100"
+              />
+            </div>
+          </div>
+
+          <!-- Evidence Images -->
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-foreground">
+              Evidence Images (optional)
+            </label>
+            <div class="space-y-4">
+              <!-- Image Upload Area -->
+              <div
+                class="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center"
+              >
+                <input
+                  ref="fileInput"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  class="hidden"
+                  @change="handleFileSelect"
+                />
+                <div class="space-y-2">
+                  <div class="text-muted-foreground">
+                    <Upload class="mx-auto h-8 w-8 mb-2" />
+                    <p>Click to upload or drag and drop</p>
+                    <p class="text-xs">PNG, JPG, GIF, WebP up to 5MB each</p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    @click="fileInput?.click()"
+                  >
+                    Select Images
+                  </Button>
+                </div>
+              </div>
+
+              <!-- Uploaded Images Preview -->
+              <div v-if="uploadedImages.length > 0" class="space-y-2">
+                <h4 class="text-sm font-medium">Uploaded Images:</h4>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div
+                    v-for="(image, index) in uploadedImages"
+                    :key="index"
+                    class="relative group"
+                  >
+                    <img
+                      :src="image.url"
+                      :alt="image.fileName"
+                      class="w-full h-24 object-cover rounded-lg border"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      @click="removeImage(index)"
+                    >
+                      <X class="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload Progress -->
+              <div v-if="isUploading" class="space-y-2">
+                <div class="flex items-center space-x-2">
+                  <div
+                    class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"
+                  ></div>
+                  <span class="text-sm text-muted-foreground"
+                    >Uploading images...</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Submit Button -->
@@ -169,15 +258,59 @@
         </form>
       </Card>
 
-      <!-- Success Message -->
+      <!-- Success Message with Confetti -->
       <div v-if="showSuccess" class="mt-6">
-        <Card class="p-4 bg-green-50 border-green-200">
+        <!-- Confetti Component -->
+        <Confetti
+          :options="{
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          }"
+          class="fixed inset-0 pointer-events-none z-50"
+        />
+
+        <Card class="p-6 bg-green-50 border-green-200">
+          <div class="text-center space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+              <div
+                class="w-3 h-3 bg-green-500 rounded-full animate-pulse"
+              ></div>
+              <p class="text-green-800 font-medium text-lg">
+                {{ successMessage }}
+              </p>
+            </div>
+
+            <div class="space-y-3">
+              <p class="text-green-700 text-sm">
+                Your experience has been successfully shared and is now live!
+              </p>
+
+              <div class="flex justify-center space-x-3">
+                <Button
+                  class="bg-green-600 hover:bg-green-700 text-white"
+                  @click="viewScamDetails"
+                >
+                  <Icon name="lucide:eye" class="w-4 h-4 mr-2" />
+                  View My Experience
+                </Button>
+
+                <Button variant="outline" @click="submitAnother">
+                  <Icon name="lucide:plus" class="w-4 h-4 mr-2" />
+                  Submit Another
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <!-- Error Message -->
+      <div v-if="error" class="mt-6">
+        <Card class="p-4 bg-red-50 border-red-200">
           <div class="flex items-center space-x-2">
-            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-            <p class="text-green-800 font-medium">
-              Thank you for sharing your experience! Your submission has been
-              received and will help protect others.
-            </p>
+            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+            <p class="text-red-800 font-medium">{{ error }}</p>
           </div>
         </Card>
       </div>
@@ -186,58 +319,267 @@
 </template>
 
 <script setup lang="ts">
+import { Upload, X } from "lucide-vue-next";
+import { SCAM_MESSAGES } from "~/config/messages";
+import type { ApiError } from "~/lib/types";
+
+// Confetti component is auto-imported from ~/components/ui/confetti
+
 definePageMeta({
   layout: "core",
   middleware: ["auth-logged-in"],
 });
 
-// Form data
-const form = ref({
-  scamType: "",
-  title: "",
-  description: "",
-  contactMethod: "",
-  financialLoss: "",
-  lossAmount: "",
-  date: "",
-  location: "",
-  tips: "",
+// SEO Meta tags
+useHead({
+  title: "Share Your Experience - ScamAlert Pakistan",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Share your scam experience to help others stay safe. Report scams, fraud, and deceptive practices in Pakistan.",
+    },
+    {
+      name: "keywords",
+      content:
+        "scam report, fraud alert, Pakistan scams, online safety, scam prevention, fraud reporting",
+    },
+    {
+      property: "og:title",
+      content: "Share Your Experience - ScamAlert Pakistan",
+    },
+    {
+      property: "og:description",
+      content:
+        "Share your scam experience to help others stay safe. Report scams, fraud, and deceptive practices in Pakistan.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Share Your Experience - ScamAlert Pakistan",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Share your scam experience to help others stay safe. Report scams, fraud, and deceptive practices in Pakistan.",
+    },
+  ],
 });
 
+// Image upload composable
+const { uploadMultipleFiles } = useImageUpload();
+
+// Form data
+const form = ref({
+  type: "",
+  title: "",
+  content: "",
+  platforms: [] as string[],
+  locations: [] as string[],
+  isAnonymous: false,
+  hasFinancialLoss: false,
+  amountLost: 0,
+});
+
+const customLocation = ref("");
 const isSubmitting = ref(false);
 const showSuccess = ref(false);
+const successMessage = ref("");
+const error = ref("");
+const createdScamId = ref<string | null>(null);
+const router = useRouter();
+
+// Image upload state
+const fileInput = ref<HTMLInputElement | null>(null);
+const uploadedImages = ref<
+  { url: string; fileName: string; fileId?: string }[]
+>([]);
+const isUploading = ref(false);
+
+// Available options
+const availablePlatforms = [
+  "WhatsApp",
+  "Facebook",
+  "Instagram",
+  "LinkedIn",
+  "Email",
+  "SMS",
+  "Phone Call",
+  "Website",
+  "OLX",
+  "Daraz",
+  "JazzCash",
+  "EasyPaisa",
+  "Other",
+];
+
+const availableLocations = [
+  "Islamabad",
+  "Lahore",
+  "Karachi",
+  "Peshawar",
+  "Quetta",
+  "Multan",
+  "Faisalabad",
+  "Online",
+  "Other",
+];
+
+// Add custom location
+const addCustomLocation = () => {
+  if (
+    customLocation.value.trim() &&
+    !form.value.locations.includes(customLocation.value.trim())
+  ) {
+    form.value.locations.push(customLocation.value.trim());
+    customLocation.value = "";
+  }
+};
+
+// Handle file selection and upload
+const handleFileSelect = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    isUploading.value = true;
+
+    try {
+      const files = Array.from(target.files);
+      const uploadResults = await uploadMultipleFiles(files);
+
+      // Add uploaded images to the list
+      uploadResults.forEach((result) => {
+        uploadedImages.value.push({
+          url: result.url,
+          fileName: result.fileName,
+          fileId: result.fileId,
+        });
+      });
+    } catch (err: unknown) {
+      console.error("Upload failed:", err);
+      const apiError = err as ApiError;
+      error.value =
+        apiError.data?.message ||
+        apiError.statusMessage ||
+        apiError.message ||
+        SCAM_MESSAGES.UPLOAD_FAILED;
+    } finally {
+      isUploading.value = false;
+      // Clear the file input
+      if (target) {
+        target.value = "";
+      }
+    }
+  }
+};
+
+const removeImage = (index: number) => {
+  uploadedImages.value.splice(index, 1);
+};
 
 // Handle form submission
 const handleSubmit = async () => {
   isSubmitting.value = true;
+  error.value = "";
+  showSuccess.value = false;
 
   try {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Validate required fields
+    if (!form.value.type) {
+      throw new Error(SCAM_MESSAGES.VALIDATION_ERRORS.TYPE_REQUIRED);
+    }
+    if (!form.value.title.trim()) {
+      throw new Error(SCAM_MESSAGES.VALIDATION_ERRORS.TITLE_REQUIRED);
+    }
+    if (!form.value.content.trim()) {
+      throw new Error(SCAM_MESSAGES.VALIDATION_ERRORS.CONTENT_REQUIRED);
+    }
 
-    // Reset form
-    form.value = {
-      scamType: "",
-      title: "",
-      description: "",
-      contactMethod: "",
-      financialLoss: "",
-      lossAmount: "",
-      date: "",
-      location: "",
-      tips: "",
-    };
+    console.log("Platforms array:", form.value.platforms);
+    console.log("Platforms length:", form.value.platforms.length);
 
-    showSuccess.value = true;
+    if (form.value.platforms.length === 0) {
+      throw new Error(SCAM_MESSAGES.VALIDATION_ERRORS.PLATFORMS_REQUIRED);
+    }
+    if (form.value.locations.length === 0) {
+      throw new Error(SCAM_MESSAGES.VALIDATION_ERRORS.LOCATIONS_REQUIRED);
+    }
 
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      showSuccess.value = false;
-    }, 5000);
-  } catch (error) {
-    console.error("Error submitting form:", error);
+    // Prepare evidence URLs from uploaded images
+    const evidenceUrls = uploadedImages.value.map((image) => image.url);
+
+    // Submit to API
+    const response = await $fetch("/api/scams", {
+      method: "POST",
+      body: {
+        title: form.value.title.trim(),
+        content: form.value.content.trim(),
+        type: form.value.type,
+        platforms: form.value.platforms,
+        locations: form.value.locations,
+        isAnonymous: form.value.isAnonymous,
+        evidenceUrls: evidenceUrls,
+        hasFinancialLoss: form.value.hasFinancialLoss,
+        amountLost: form.value.amountLost,
+      },
+    });
+
+    if (response.success) {
+      // Store the created scam ID for navigation
+      createdScamId.value = response.data.scamId;
+
+      // Reset form
+      form.value = {
+        type: "",
+        title: "",
+        content: "",
+        platforms: [],
+        locations: [],
+        isAnonymous: false,
+        hasFinancialLoss: false,
+        amountLost: 0,
+      };
+      uploadedImages.value = []; // Clear uploaded images on success
+
+      showSuccess.value = true;
+      successMessage.value = SCAM_MESSAGES.SUBMISSION_SUCCESS;
+
+      // Auto-redirect to scam details after 3 seconds
+      setTimeout(() => {
+        if (createdScamId.value) {
+          router.push(`/scams/${createdScamId.value}`);
+        }
+      }, 3000);
+    }
+  } catch (err: unknown) {
+    console.error("Error submitting form:", err);
+    const apiError = err as ApiError;
+    error.value =
+      apiError.data?.message ||
+      apiError.statusMessage ||
+      apiError.message ||
+      SCAM_MESSAGES.SUBMISSION_FAILED;
   } finally {
     isSubmitting.value = false;
   }
+};
+
+// Navigation methods
+const viewScamDetails = () => {
+  if (createdScamId.value) {
+    router.push(`/scams/${createdScamId.value}`);
+  }
+};
+
+const submitAnother = () => {
+  showSuccess.value = false;
+  createdScamId.value = null;
+  // Form is already reset, so user can submit another
 };
 </script>
