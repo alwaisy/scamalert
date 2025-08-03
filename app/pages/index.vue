@@ -17,6 +17,9 @@
 
     <!-- Call to Action Section -->
     <LandingCTA />
+
+    <!-- Footer -->
+    <LandingFooter />
   </div>
 </template>
 
