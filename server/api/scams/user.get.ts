@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
 
     // Build where conditions - always filter by author
     const whereConditions: (SQL | undefined)[] = [
-      eq(scams.authorId, user.id), // Only user's own scams
+      eq(scams.authorId, event.context.localUser?.id || 0), // Only user's own scams
     ];
 
     if (type) {
@@ -172,6 +172,7 @@ export default defineEventHandler(async (event) => {
         evidenceUrls: scam.evidenceUrls ? JSON.parse(scam.evidenceUrls) : [],
         createdAt,
         updatedAt,
+        isUpvoted: false, // User can't upvote their own scams
       };
     });
 
@@ -196,7 +197,9 @@ export default defineEventHandler(async (event) => {
     setHeader(
       event,
       "ETag",
-      `user-scams-${user.id}-${page}-${limit}-${JSON.stringify(validatedQuery)}`
+      `user-scams-${
+        event.context.localUser?.id
+      }-${page}-${limit}-${JSON.stringify(validatedQuery)}`
     );
 
     return validatedResponse;

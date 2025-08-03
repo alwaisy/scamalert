@@ -37,15 +37,17 @@
           <span class="ml-2">Scams</span>
         </Badge>
 
-        <Badge variant="outline" class="text-lg px-4 py-2 flex">
+        <!-- Upvotes Badge - DISABLED FOR MVP -->
+        <!-- <Badge variant="outline" class="text-lg px-4 py-2 flex">
           <span class="font-bold text-primary">{{ totalUpvotes }}</span>
           <span class="ml-2">Votes</span>
-        </Badge>
+        </Badge> -->
 
-        <Badge variant="outline" class="text-lg px-4 py-2">
+        <!-- Comments Badge - DISABLED FOR MVP -->
+        <!-- <Badge variant="outline" class="text-lg px-4 py-2">
           <span class="font-bold text-primary">{{ totalComments }}</span>
           <span class="ml-2">Comments</span>
-        </Badge>
+        </Badge> -->
       </div>
     </CardContent>
   </Card>

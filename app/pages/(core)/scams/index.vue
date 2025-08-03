@@ -4,8 +4,8 @@
       <!-- Hero Section -->
       <ScamsHero
         :total-scams="data?.length || 0"
-        :total-upvotes="data?.reduce((sum, scam) => sum + ((scam as any).upvotesCount || 0), 0) || 0"
-        :total-comments="data?.reduce((sum, scam) => sum + ((scam as any).commentsCount || 0), 0) || 0"
+        :total-upvotes="0"
+        :total-comments="0"
       />
 
       <!-- Filters -->
@@ -125,7 +125,6 @@ import type { Pagination, ScamFilters, ScamListItem } from "~/lib/types";
 
 definePageMeta({
   layout: "core",
-  middleware: ["auth-logged-in"],
 });
 
 // API composable

@@ -85,7 +85,8 @@
         >
           <div class="text-center md:text-left">
             <p class="text-sm text-muted-foreground">
-              &copy; 2024 ScamAlert. Stay safe, stay informed.
+              &copy; {{ new Date().getFullYear() }} ScamAlert. Stay safe, stay
+              informed.
             </p>
           </div>
 
@@ -98,7 +99,7 @@
               Sign in
             </NuxtLink>
             <NuxtLink
-              to="/register"
+              to="/login"
               class="text-sm text-primary hover:text-primary/80 transition-colors"
             >
               Sign up

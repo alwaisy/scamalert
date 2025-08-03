@@ -47,8 +47,8 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if user is the author or an admin
-    const isAuthor = scamData.authorId === user.id;
-    const isAdmin = user.status === "admin";
+    const isAuthor = scamData.authorId === event.context.localUser?.id;
+    const isAdmin = event.context.localUser?.status === "admin";
 
     if (!isAuthor && !isAdmin) {
       throw createError({

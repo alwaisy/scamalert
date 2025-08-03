@@ -20,14 +20,6 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  nitro: {
-    experimental: {
-      wasm: true,
-    },
-  },
-
-  ssr: false, // Try disabling SSR to see if this helps with cookie handling
-
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -47,10 +39,13 @@ export default defineNuxtConfig({
     imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
     imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
     imagekitUrlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    appwriteKey: process.env.APPWRITE_KEY,
 
     // Public (client-side accessible)
     public: {
       clientUrl: process.env.NUXT_PUBLIC_CLIENT_URL,
+      appwriteEndpoint: process.env.PUBLIC_APPWRITE_ENDPOINT,
+      appwriteProjectId: process.env.PUBLIC_APPWRITE_PROJECT,
     },
   },
 });

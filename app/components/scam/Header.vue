@@ -6,10 +6,10 @@
         <Icon name="lucide:user" class="w-4 h-4" />
         <span>{{ isAnonymous ? "Anonymous" : authorUsername }}</span>
       </div>
-      <div class="flex items-center gap-2">
+      <!-- <div class="flex items-center gap-2">
         <Icon name="lucide:thumbs-up" class="w-4 h-4" />
         <span>{{ upvotesCount }} upvotes</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- Scam Type Badge -->

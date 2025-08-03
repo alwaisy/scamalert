@@ -21,14 +21,16 @@
               <Icon name="lucide:calendar" class="w-4 h-4" />
               {{ formatDate(scam.createdAt) }}
             </span>
-            <span class="flex items-center gap-1">
+            <!-- Upvotes Count - DISABLED FOR MVP -->
+            <!-- <span class="flex items-center gap-1">
               <Icon name="lucide:thumbs-up" class="w-4 h-4" />
               {{ scam.upvotesCount }} upvotes
-            </span>
-            <span class="flex items-center gap-1">
+            </span> -->
+            <!-- Comments Count - DISABLED FOR MVP -->
+            <!-- <span class="flex items-center gap-1">
               <Icon name="lucide:message-circle" class="w-4 h-4" />
               {{ scam.commentsCount }} comments
-            </span>
+            </span> -->
           </div>
 
           <div class="flex flex-wrap gap-2">

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if user is admin
-    if (!user.isAdmin) {
+    if (event.context.localUser?.status !== "admin") {
       throw createError({
         statusCode: 403,
         statusMessage: "Admin access required",
@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
     await db.insert(adminActions).values({
       action: `${validatedBody.status}_scam`,
       reason: validatedBody.reason,
-      adminId: user.id,
+      adminId: event.context.localUser?.id,
       targetScamId: scamData.id,
     });
 

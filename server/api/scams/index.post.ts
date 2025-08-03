@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
           ? JSON.stringify(validatedBody.evidenceUrls)
           : null,
         isAnonymous: validatedBody.isAnonymous,
-        authorId: user.id,
+        authorId: event.context.localUser?.id || 0,
         status: "approved", // Scams are automatically approved
       })
       .returning();

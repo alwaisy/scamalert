@@ -54,19 +54,24 @@ export default defineEventHandler(async (event) => {
 
     // Check if user has upvoted this scam
     let isUpvoted = false;
-    if (user) {
+    if (user && event.context.localUser?.id) {
       // Always check fresh from database
       const userUpvote = await db
         .select({
           id: upvotes.id,
         })
         .from(upvotes)
-        .where(and(eq(upvotes.scamId, scam.id), eq(upvotes.userId, user.id)))
+        .where(
+          and(
+            eq(upvotes.scamId, scam.id),
+            eq(upvotes.userId, event.context.localUser.id)
+          )
+        )
         .limit(1);
 
       isUpvoted = userUpvote.length > 0;
       console.log(
-        `User ${user.id} isUpvoted for scam ${scam.id}: ${isUpvoted}`
+        `User ${event.context.localUser.id} isUpvoted for scam ${scam.id}: ${isUpvoted}`
       );
     }
 

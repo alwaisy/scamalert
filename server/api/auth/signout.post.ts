@@ -1,0 +1,11 @@
+// server/api/auth/signout.post.ts
+import { SESSION_COOKIE, createSessionClient } from "../../lib/appwrite";
+
+export default defineEventHandler(async (event) => {
+  const { account } = createSessionClient(event);
+
+  await account.deleteSession("current");
+  deleteCookie(event, SESSION_COOKIE);
+
+  await sendRedirect(event, "/");
+});

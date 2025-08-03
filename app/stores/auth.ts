@@ -1,35 +1,27 @@
 import { defineStore } from "pinia";
 
+// Interface for the combined user data from our API
 interface AuthUser {
-  id: number;
+  // Appwrite data
+  $id: string;
   email: string;
-  username: string;
-  status: string;
-}
+  name: string;
+  emailVerification: boolean;
 
-interface AuthResponse {
-  success: boolean;
-  user?: AuthUser;
-  error?: string;
-}
-
-interface LoginResponse {
-  success: boolean;
-  user?: AuthUser;
-  error?: string;
-}
-
-interface RegisterResponse {
-  success: boolean;
-  user?: AuthUser;
-  error?: string;
+  // Local database data
+  localId?: number;
+  username?: string;
+  status?: string;
+  createdAt?: Date;
 }
 
 interface ApiError {
   data?: {
     message?: string;
   };
-  statusMessage?: string;
+  message?: string;
+  status?: number;
+  statusCode?: number;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -52,14 +44,12 @@ export const useAuthStore = defineStore("auth", {
     async checkAuth() {
       try {
         this.isLoading = true;
-        const response = await $fetch<AuthResponse>("/api/auth/me", {
-          credentials: "include", // Include cookies in request
-        });
+        const user = await $fetch("/api/user");
 
-        if (response.success && response.user) {
-          this.user = response.user;
+        if (user) {
+          this.user = user as AuthUser;
           this.isInitialized = true;
-          return { success: true, user: response.user };
+          return { success: true, user: user };
         } else {
           this.user = null;
           this.isInitialized = true;
@@ -81,66 +71,29 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async login(email: string, password: string) {
+    // PASSWORDLESS ONLY - Send magic link
+    async sendMagicLink(email: string) {
       try {
         this.isLoading = true;
-        const response = await $fetch<LoginResponse>("/api/auth/login", {
+
+        const formData = new FormData();
+        formData.append("email", email);
+
+        const response = await $fetch("/api/auth/magic-link", {
           method: "POST",
-          body: { email, password },
-          credentials: "include", // Include cookies in request
+          body: formData,
         });
 
-        if (response.success && response.user) {
-          this.user = response.user;
-          this.isInitialized = true;
-          return { success: true, user: response.user };
-        } else {
-          return {
-            success: false,
-            error: response.error || "Login failed",
-          };
-        }
+        return { success: true, message: response.message };
       } catch (error: unknown) {
-        console.error("Login failed:", error);
-        const apiError = error as ApiError;
-        return {
-          success: false,
-          error:
-            apiError.data?.message || apiError.statusMessage || "Login failed",
-        };
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    async register(email: string, password: string) {
-      try {
-        this.isLoading = true;
-        const response = await $fetch<RegisterResponse>("/api/auth/register", {
-          method: "POST",
-          body: { email, password },
-          credentials: "include", // Include cookies in request
-        });
-
-        if (response.success && response.user) {
-          this.user = response.user;
-          this.isInitialized = true;
-          return { success: true, user: response.user };
-        } else {
-          return {
-            success: false,
-            error: response.error || "Registration failed",
-          };
-        }
-      } catch (error: unknown) {
-        console.error("Registration failed:", error);
+        console.error("Magic link failed:", error);
         const apiError = error as ApiError;
         return {
           success: false,
           error:
             apiError.data?.message ||
-            apiError.statusMessage ||
-            "Registration failed",
+            apiError.message ||
+            "Failed to send magic link",
         };
       } finally {
         this.isLoading = false;
@@ -150,14 +103,27 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       try {
         this.isLoading = true;
-        await $fetch("/api/auth/logout", {
-          method: "POST",
-          credentials: "include", // Include cookies in request
-        });
+
+        try {
+          await $fetch("/api/auth/signout", {
+            method: "POST",
+          });
+        } catch (innerError: unknown) {
+          // Check if this is a redirect (which means success)
+          const error = innerError as ApiError;
+          if (error.status === 302 || error.statusCode === 302) {
+            // Logout succeeded
+            this.user = null;
+            this.isInitialized = true;
+            return { success: true };
+          }
+          throw error;
+        }
+
         this.user = null;
         this.isInitialized = true;
         return { success: true };
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Logout failed:", error);
         return { success: false, error: "Logout failed" };
       } finally {

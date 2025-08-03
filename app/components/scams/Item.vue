@@ -1,70 +1,68 @@
 <template>
   <Card
-    class="py-4 cursor-pointer shadow-none hover:shadow-md transition-shadow"
+    class="group cursor-pointer border border-border/50 hover:border-border hover:shadow-lg transition-all duration-300 bg-card/50 hover:bg-card"
   >
-    <NuxtLink
-      :to="`/scams/${props.scam.scamId}`"
-      class="h-full flex flex-col gap-y-6"
-    >
-      <CardHeader class="px-4">
-        <CardTitle class="text-lg leading-tight">
-          {{ scam.title }}
-        </CardTitle>
-      </CardHeader>
+    <!-- Card Content - Clickable -->
+    <NuxtLink :to="`/scams/${props.scam.scamId}`">
+      <CardContent class="px-6">
+        <!-- Quote Icon & Type Badge -->
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"
+            >
+              <Icon name="lucide:quote" class="w-4 h-4 text-primary" />
+            </div>
+            <Badge variant="secondary" class="text-xs font-medium">
+              {{ formatScamType(scam.type) }}
+            </Badge>
+          </div>
 
-      <CardContent class="flex-1 px-4">
-        <!-- Type Badge -->
-        <Badge variant="secondary" class="text-xs">
-          {{ formatScamType(scam.type) }}
-        </Badge>
+          <!-- Date -->
+          <p class="text-xs text-muted-foreground">
+            {{ getFormattedDate(scam.createdAt) }}
+          </p>
+        </div>
 
-        <!-- Platform Tag -->
-        <!-- <div class="flex gap-1">
-        <Badge
-          v-if="scam.platform.length > 0"
-          variant="outline"
-          class="text-[10px] px-1.5 py-0.5"
-        >
-          {{ scam.platform[0] }}
-        </Badge>
-      </div> -->
-
-        <!-- Location Tag -->
-        <!-- <div class="flex gap-1">
-        <Badge
-          v-if="scam.location.length > 0"
-          variant="outline"
-          class="text-[10px] px-1.5 py-0.5 bg-accent/50"
-        >
-          📍 {{ scam.location[0] }}
-        </Badge>
-      </div> -->
+        <!-- Content Preview -->
+        <div class="mb-0">
+          <blockquote
+            class="text-sm text-muted-foreground leading-relaxed line-clamp-4"
+          >
+            "{{ getContentPreview(scam.content) }}"
+          </blockquote>
+        </div>
       </CardContent>
     </NuxtLink>
 
-    <CardFooter class="pt-0 mt-auto px-4">
-      <div class="flex gap-2 w-full justify-between">
-        <SharedUpvoteButton
+    <!-- Card Footer - Non-clickable -->
+    <CardFooter class="px-6">
+      <div class="flex items-center justify-between w-full">
+        <!-- Share Button -->
+        <Button
+          variant="ghost"
+          size="sm"
+          class="transition-opacity duration-200"
+          @click.stop="handleShare"
+        >
+          <Icon name="lucide:share" class="w-4 h-4" />
+        </Button>
+
+        <!-- Upvote CTA Button -->
+        <!-- <SharedUpvoteButton
           :upvotes="scam.upvotesCount"
           :scam-id="scam.scamId"
           :is-upvoted="scam.isUpvoted"
           @update:upvotes="handleUpvotesUpdate"
           @update:is-upvoted="handleIsUpvotedUpdate"
-        />
-        <Button
-          variant="outline"
-          size="sm"
-          class="gap-2"
-          @click.stop="handleShare"
-        >
-          <Icon name="lucide:share" class="w-4 h-4" />
-        </Button>
+        /> -->
       </div>
     </CardFooter>
   </Card>
 </template>
 
 <script setup lang="ts">
+import { formatTimeAgo } from "@vueuse/core";
 import { toast } from "vue-sonner";
 import type { ScamListItem } from "~/lib/types";
 
@@ -72,10 +70,12 @@ interface Props {
   scam: ScamListItem;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits<{
+/* interface Emits {
   "update:scam": [scam: ScamListItem];
-}>();
+} */
+
+const props = defineProps<Props>();
+// const emit = defineEmits<Emits>();
 
 const config = useRuntimeConfig();
 const clientUrl = config.public.clientUrl;
@@ -87,7 +87,44 @@ const formatScamType = (type: string) => {
     .join(" ");
 };
 
-const handleUpvotesUpdate = (count: number) => {
+const getContentPreview = (content: string) => {
+  // Return first 150 characters with proper word boundary
+  if (content.length <= 150) return content;
+  const truncated = content.substring(0, 150);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return lastSpace > 0
+    ? truncated.substring(0, lastSpace) + "..."
+    : truncated + "...";
+};
+
+const getFormattedDate = (dateString: string) => {
+  // Handle invalid dates or 1970 fallback
+  if (!dateString || dateString === "1970-01-01T00:00:00.000Z") {
+    return "Recently";
+  }
+
+  try {
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return "Recently";
+    }
+
+    // Check if it's the 1970 epoch date (invalid fallback)
+    if (date.getFullYear() === 1970) {
+      return "Recently";
+    }
+
+    // Use VueUse formatTimeAgo for clean, localized formatting
+    return formatTimeAgo(date);
+  } catch {
+    console.warn("Invalid date format:", dateString);
+    return "Recently";
+  }
+};
+
+/* const handleUpvotesUpdate = (count: number) => {
   // Update the scam object with new upvote count
   const updatedScam = {
     ...props.scam,
@@ -103,14 +140,13 @@ const handleIsUpvotedUpdate = (value: boolean) => {
     isUpvoted: value,
   };
   emit("update:scam", updatedScam);
-};
+}; */
 
 const scamUrl = `${clientUrl}/scams/${props.scam.scamId}`;
 
 const handleShare = async () => {
   try {
     await navigator.clipboard.writeText(scamUrl);
-
     toast("Scam URL copied");
   } catch (error) {
     console.error("Failed to copy:", error);
@@ -120,3 +156,12 @@ const handleShare = async () => {
   }
 };
 </script>
+
+<style scoped>
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

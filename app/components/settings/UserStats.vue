@@ -1,10 +1,10 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-    <Card>
-      <CardContent class="p-4">
+  <div class="flex items-center gap-x-4 mb-6">
+    <Card class="py-4">
+      <CardContent>
         <div class="flex items-center gap-2">
-          <Icon name="lucide:file-text" class="w-5 h-5 text-primary" />
-          <div>
+          <Icon name="lucide:file-text" class="text-primary" size="24" />
+          <div class="flex items-center gap-x-2">
             <p class="text-sm text-muted-foreground">Total Scams</p>
             <p class="text-2xl font-bold">{{ totalScams }}</p>
           </div>
@@ -12,11 +12,11 @@
       </CardContent>
     </Card>
 
-    <Card>
-      <CardContent class="p-4">
+    <Card class="py-4">
+      <CardContent>
         <div class="flex items-center gap-2">
-          <Icon name="lucide:check-circle" class="w-5 h-5 text-green-600" />
-          <div>
+          <Icon name="lucide:check-circle" class="text-green-600" size="24" />
+          <div class="flex items-center gap-x-2">
             <p class="text-sm text-muted-foreground">Approved</p>
             <p class="text-2xl font-bold">{{ approvedCount }}</p>
           </div>
@@ -24,7 +24,8 @@
       </CardContent>
     </Card>
 
-    <Card>
+    <!-- Comments Card - DISABLED FOR MVP -->
+    <!-- <Card>
       <CardContent class="p-4">
         <div class="flex items-center gap-2">
           <Icon name="lucide:message-circle" class="w-5 h-5 text-blue-600" />
@@ -34,9 +35,10 @@
           </div>
         </div>
       </CardContent>
-    </Card>
+    </Card> -->
 
-    <Card>
+    <!-- Upvotes Card - DISABLED FOR MVP -->
+    <!-- <Card>
       <CardContent class="p-4">
         <div class="flex items-center gap-2">
           <Icon name="lucide:thumbs-up" class="w-5 h-5 text-blue-600" />
@@ -46,7 +48,7 @@
           </div>
         </div>
       </CardContent>
-    </Card>
+    </Card> -->
   </div>
 </template>
 

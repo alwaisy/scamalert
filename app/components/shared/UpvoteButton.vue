@@ -4,12 +4,13 @@
     size="sm"
     class="gap-2 transition-all duration-200"
     :class="buttonClass"
-    :disabled="isLoading"
+    :disabled="isLoading" 
     @click="handleToggleUpvote"
   >
     <Icon
       name="icon-park-outline:heart"
-      class="w-4 h-4 transition-all duration-200"
+      class="w-6 h-6 transition-all duration-200"
+      size="20"
       :class="iconClass"
     />
     <span class="text-xs">
@@ -66,10 +67,10 @@ const buttonClass = computed(() => ({
   "bg-primary text-primary-foreground": localIsUpvoted.value,
 }));
 const iconClass = computed(() => ({
-  "text-red-500": localIsUpvoted.value,
+  "text-white-500": localIsUpvoted.value,
 }));
 const buttonText = computed(() =>
-  localIsUpvoted.value ? "Felt their pain" : "Wanna feel their pain?"
+  localIsUpvoted.value ? "You relate to this" : "I can relate"
 );
 
 const handleToggleUpvote = async () => {

@@ -52,7 +52,7 @@
         <ScamMetadata :platforms="data.platforms" :locations="data.locations" />
 
         <!-- Actions -->
-        <Card>
+        <!-- <Card>
           <CardContent>
             <ScamActions
               :upvotes-count="data.upvotesCount"
@@ -62,10 +62,10 @@
               @update:is-upvoted="handleIsUpvotedUpdate"
             />
           </CardContent>
-        </Card>
+        </Card> -->
 
-        <!-- Comments Section -->
-        <ScamComments :comments="data.comments" />
+        <!-- Comments Section - DISABLED FOR MVP -->
+        <!-- <ScamComments :comments="data.comments" /> -->
       </div>
 
       <!-- Not Found State -->
@@ -112,7 +112,7 @@ const scamId = route.params.id as string;
 // Page meta
 definePageMeta({
   layout: "core",
-  middleware: ["auth-logged-in"],
+  // middleware: ["auth-logged-in"],
 });
 
 // API composable
@@ -138,7 +138,7 @@ const handleError = (err: Error) => {
   console.error("Scam detail page error:", err);
 };
 
-// Handle upvote updates
+/* // Handle upvote updates
 const handleUpvotesUpdate = (count: number) => {
   console.log("Received upvotes update:", count);
   if (data.value) {
@@ -155,7 +155,7 @@ const handleIsUpvotedUpdate = (value: boolean) => {
     // Force reactivity
     triggerRef(data);
   }
-};
+}; */
 
 // SEO
 useHead(() => ({

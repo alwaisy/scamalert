@@ -6,8 +6,9 @@ const UserStatusEnum = ["active", "revoked"] as const;
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
+  appwriteId: text("appwrite_id").unique(), // Appwrite user ID (optional for backwards compatibility)
   email: text("email").notNull().unique(),
-  password: text("password").notNull(), // Hashed password
+  password: text("password"), // Make optional since Appwrite handles auth
   username: text("username").notNull().unique(),
   status: text("status", { enum: UserStatusEnum }).notNull().default("active"),
   suspendReason: text("suspend_reason"),

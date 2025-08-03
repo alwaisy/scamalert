@@ -133,7 +133,12 @@ export default defineEventHandler(async (event) => {
             id: upvotes.id,
           })
           .from(upvotes)
-          .where(and(eq(upvotes.scamId, scam.id), eq(upvotes.userId, user.id)))
+          .where(
+            and(
+              eq(upvotes.scamId, scam.id),
+              eq(upvotes.userId, event.context.localUser?.id || 0)
+            )
+          )
           .limit(1);
 
         userUpvotes.set(scam.id, userUpvote.length > 0);

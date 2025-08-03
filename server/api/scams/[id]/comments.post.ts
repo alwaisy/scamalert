@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
-import { db, scams, comments } from "../../../db";
-import { CreateCommentRequestSchema } from '../_schema'
+import { comments, db, scams } from "../../../db";
+import { CreateCommentRequestSchema } from "../_schema";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -41,13 +41,20 @@ export default defineEventHandler(async (event) => {
 
     const scamData = scam[0];
 
+    if (!event.context.localUser?.id) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: "User not authenticated",
+      });
+    }
+
     // Create comment
     const newComment = await db
       .insert(comments)
       .values({
         content: validatedBody.content,
         scamId: scamData.id,
-        authorId: user.id,
+        authorId: event.context.localUser.id,
       })
       .returning();
 

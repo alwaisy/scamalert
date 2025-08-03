@@ -59,11 +59,11 @@
       />
 
       <!-- Filters -->
-      <SettingsScamFilters
+      <!-- <SettingsScamFilters
         v-model:status-filter="statusFilter"
         v-model:sort-by="sortBy"
         v-model:sort-order="sortOrder"
-      />
+      /> -->
 
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
@@ -161,7 +161,7 @@ const statusFilter = ref("");
 const sortBy = ref("createdAt");
 const sortOrder = ref("desc");
 
-// Fetch user's scams
+// Fetch user's scams (client-side only to avoid SSR auth issues)
 const {
   data: scamsData,
   pending,
@@ -174,6 +174,7 @@ const {
     sortBy: sortBy.value,
     sortOrder: sortOrder.value,
   })),
+  server: false, // Client-side only
 });
 
 // Computed properties
@@ -185,13 +186,11 @@ const approvedCount = computed(
   () => userScams.value.filter((scam) => scam.status === "approved").length
 );
 
-const totalComments = computed(() =>
-  userScams.value.reduce((total, scam) => total + scam.commentsCount, 0)
-);
+// Comments disabled for MVP
+const totalComments = computed(() => 0);
 
-const totalUpvotes = computed(() =>
-  userScams.value.reduce((total, scam) => total + scam.upvotesCount, 0)
-);
+// Upvotes disabled for MVP
+const totalUpvotes = computed(() => 0);
 
 // Methods
 

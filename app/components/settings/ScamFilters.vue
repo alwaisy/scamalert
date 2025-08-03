@@ -24,8 +24,8 @@
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="createdAt">Date</SelectItem>
-              <SelectItem value="upvotes">Upvotes</SelectItem>
-              <SelectItem value="comments">Comments</SelectItem>
+              <!-- <SelectItem value="upvotes">Upvotes</SelectItem> -->
+              <!-- <SelectItem value="comments">Comments</SelectItem> -->
             </SelectContent>
           </Select>
         </div>
@@ -55,7 +55,10 @@ interface Props {
 }
 
 interface Emits {
-  (e: "update:statusFilter" | "update:sortBy" | "update:sortOrder", value: string): void;
+  (
+    e: "update:statusFilter" | "update:sortBy" | "update:sortOrder",
+    value: string
+  ): void;
 }
 
 const props = defineProps<Props>();

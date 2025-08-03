@@ -4,7 +4,7 @@ import {
   colors,
   uniqueNamesGenerator,
 } from "unique-names-generator";
-import { findUserByUsername } from "./auth";
+// Remove old auth import - we'll use the function from user-sync instead
 
 // Custom dictionaries for ScamAlert context
 const scamTypes = [
@@ -111,6 +111,8 @@ export async function generateUniqueUsername(): Promise<string> {
     const username = pattern();
 
     // Check if username is already taken
+    // Note: findUserByUsername is imported from user-sync where this function is used
+    const { findUserByUsername } = await import("./user-sync");
     const existingUser = await findUserByUsername(username);
     if (!existingUser) {
       return username;
@@ -137,6 +139,7 @@ export function generateDisplayName(username: string): string {
 
 // Validate if a username is available (for future use)
 export async function isUsernameAvailable(username: string): Promise<boolean> {
+  const { findUserByUsername } = await import("./user-sync");
   const existingUser = await findUserByUsername(username);
   return !existingUser;
 }

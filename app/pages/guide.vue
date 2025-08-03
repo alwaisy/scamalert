@@ -203,7 +203,7 @@
         </p>
         <div class="flex justify-center space-x-4">
           <NuxtLink
-            to="/register"
+            to="/login"
             class="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2 rounded-md font-medium transition-colors"
           >
             Create Account

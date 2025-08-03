@@ -3,12 +3,12 @@ import { db, scams, upvotes } from "../../../db";
 
 export default defineEventHandler(async (event) => {
   try {
-    // Get authenticated user
-    const user = event.context.user;
-    if (!user) {
+    // Get authenticated user (not used anymore, but keeping for reference)
+    const _user = event.context.user;
+    if (!event.context.localUser?.id) {
       throw createError({
         statusCode: 401,
-        statusMessage: "Unauthorized",
+        statusMessage: "User not authenticated",
       });
     }
 
@@ -40,7 +40,12 @@ export default defineEventHandler(async (event) => {
     const existingUpvote = await db
       .select()
       .from(upvotes)
-      .where(and(eq(upvotes.scamId, scamData.id), eq(upvotes.userId, user.id)))
+      .where(
+        and(
+          eq(upvotes.scamId, scamData.id),
+          eq(upvotes.userId, event.context.localUser?.id)
+        )
+      )
       .limit(1);
 
     let newUpvotesCount = scamData.upvotesCount;
@@ -51,7 +56,10 @@ export default defineEventHandler(async (event) => {
       await db
         .delete(upvotes)
         .where(
-          and(eq(upvotes.scamId, scamData.id), eq(upvotes.userId, user.id))
+          and(
+            eq(upvotes.scamId, scamData.id),
+            eq(upvotes.userId, event.context.localUser.id)
+          )
         );
 
       newUpvotesCount = scamData.upvotesCount - 1;
@@ -60,7 +68,7 @@ export default defineEventHandler(async (event) => {
       // User hasn't upvoted - add the upvote
       await db.insert(upvotes).values({
         scamId: scamData.id,
-        userId: user.id,
+        userId: event.context.localUser.id,
       });
 
       newUpvotesCount = scamData.upvotesCount + 1;
