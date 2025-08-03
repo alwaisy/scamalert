@@ -52,43 +52,47 @@
         <div
           class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
         >
-          <Button size="lg" class="w-full sm:w-auto text-lg px-8 py-4">
-            <svg
-              class="w-6 h-6 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="12 9v3m0 0v3m0-3h3m-3 0H9m12-5c0 5.523-4.477 10-10 10S2 12.477 2 7s4.477-10 10-10 10 4.477 10 10z"
-              />
-            </svg>
-            Share Your Scam Story
-          </Button>
+          <NuxtLink to="/submit">
+            <Button size="lg" class="w-full sm:w-auto text-lg px-8 py-4">
+              <svg
+                class="w-6 h-6 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="12 9v3m0 0v3m0-3h3m-3 0H9m12-5c0 5.523-4.477 10-10 10S2 12.477 2 7s4.477-10 10-10 10 4.477 10 10z"
+                />
+              </svg>
+              Share Your Scam Story
+            </Button>
+          </NuxtLink>
 
-          <Button
-            variant="outline"
-            size="lg"
-            class="w-full sm:w-auto text-lg px-8 py-4"
-          >
-            <svg
-              class="w-6 h-6 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <NuxtLink to="/scams">
+            <Button
+              variant="outline"
+              size="lg"
+              class="w-full sm:w-auto text-lg px-8 py-4"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            Browse Scam Reports
-          </Button>
+              <svg
+                class="w-6 h-6 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+              Browse Scam Reports
+            </Button>
+          </NuxtLink>
         </div>
 
         <!-- Secondary message -->
@@ -107,19 +111,7 @@
             <div
               class="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-4"
             >
-              <svg
-                class="w-8 h-8 text-destructive"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="12 9v3m0 0v3m0-3h3m-3 0H9m12-5c0 5.523-4.477 10-10 10S2 12.477 2 7s4.477-10 10-10 10 4.477 10 10z"
-                />
-              </svg>
+              <Icon name="simple-line-icons:support" size="32" class="text-destructive" />
             </div>
             <h3 class="text-2xl font-bold text-foreground mb-3">
               Aap Scam Ka Shikar Hue Hain?
@@ -183,7 +175,9 @@
             </div>
           </div>
 
-          <Button class="w-full" size="lg"> Share My Experience → </Button>
+          <NuxtLink to="/submit">
+            <Button class="w-full" size="lg"> Share My Experience → </Button>
+          </NuxtLink>
         </Card>
 
         <!-- Right: For Protectors -->
@@ -194,19 +188,7 @@
             <div
               class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4"
             >
-              <svg
-                class="w-8 h-8 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
+              <Icon name="streamline-plump:leaf-protect" size="32" class="text-primary" />
             </div>
             <h3 class="text-2xl font-bold text-foreground mb-3">
               Apne Family Ko Bachana Chahte Hain?
@@ -268,9 +250,11 @@
             </div>
           </div>
 
-          <Button variant="outline" class="w-full" size="lg">
-            Start Learning →
-          </Button>
+          <NuxtLink to="/scams">
+            <Button variant="outline" class="w-full" size="lg">
+              Start Learning →
+            </Button>
+          </NuxtLink>
         </Card>
       </div>
 
@@ -312,16 +296,20 @@
         <div
           class="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button
-            size="lg"
-            class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white"
-          >
-            Join the Movement Today
-          </Button>
+          <NuxtLink to="/submit">
+            <Button
+              size="lg"
+              class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white"
+            >
+              Join the Movement Today
+            </Button>
+          </NuxtLink>
 
-          <Button variant="ghost" size="lg" class="w-full sm:w-auto">
-            Learn How It Works
-          </Button>
+          <NuxtLink to="/guide">
+            <Button variant="ghost" size="lg" class="w-full sm:w-auto">
+              Learn How It Works
+            </Button>
+          </NuxtLink>
         </div>
 
         <!-- Social Proof -->

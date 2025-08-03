@@ -23,19 +23,7 @@
           <div
             class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
-            <svg
-              class="w-8 h-8 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-              />
-            </svg>
+            <Icon name="hugeicons:halal" size="32" class="text-green-300" />
           </div>
           <h3 class="text-lg font-bold text-foreground mb-3">
             Halal Information
@@ -53,19 +41,11 @@
           <div
             class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
-            <svg
-              class="w-8 h-8 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
+            <Icon
+              name="hugeicons:security-check"
+              size="32"
+              class="text-blue-400"
+            />
           </div>
           <h3 class="text-lg font-bold text-foreground mb-3">
             Ghar Ki Suraksha
@@ -83,19 +63,7 @@
           <div
             class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
-            <svg
-              class="w-8 h-8 text-purple-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <Icon name="lucide:verified" size="32" class="text-purple-400" />
           </div>
           <h3 class="text-lg font-bold text-foreground mb-3">
             Community Verified
@@ -112,19 +80,7 @@
           <div
             class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
-            <svg
-              class="w-8 h-8 text-orange-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
+            <Icon name="mage:home-security-lock" size="32" class="text-orange-400" />
           </div>
           <h3 class="text-lg font-bold text-foreground mb-3">Data Mehfooz</h3>
           <p class="text-sm text-muted-foreground">
@@ -143,6 +99,11 @@
             <h3 class="text-2xl sm:text-3xl font-bold text-foreground mb-6">
               Aapki Privacy, <span class="text-primary">Hamari Zimmedari</span>
             </h3>
+
+            <p class="text-muted-foreground mb-6">
+              We're just getting started, but your safety comes first. Here's
+              what we promise:
+            </p>
 
             <div class="space-y-4">
               <div class="flex items-start gap-3">
@@ -163,11 +124,10 @@
                 </div>
                 <div>
                   <div class="font-semibold text-foreground">
-                    Anonymous Reporting
+                    Anonymous Sharing Always
                   </div>
                   <div class="text-sm text-muted-foreground">
-                    Share without revealing identity. Only scam details are
-                    public.
+                    Share without name, email, or phone number. Just your story.
                   </div>
                 </div>
               </div>
@@ -190,38 +150,11 @@
                 </div>
                 <div>
                   <div class="font-semibold text-foreground">
-                    No Personal Data Sale
+                    No Money, No Ads
                   </div>
                   <div class="text-sm text-muted-foreground">
-                    We NEVER sell your information to anyone. Free platform, no
-                    hidden agenda.
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-3">
-                <div
-                  class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-                >
-                  <svg
-                    class="w-3 h-3 text-green-600"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-semibold text-foreground">
-                    Secure Storage
-                  </div>
-                  <div class="text-sm text-muted-foreground">
-                    Bank-level encryption. Data stored safely in
-                    Pakistan-compliant servers.
+                    This is free forever. We're not selling anything or making
+                    money from this.
                   </div>
                 </div>
               </div>
@@ -247,19 +180,45 @@
                     Community Moderation
                   </div>
                   <div class="text-sm text-muted-foreground">
-                    Reports verified by real Pakistani families. No bots or fake
-                    accounts.
+                    Real Pakistani families help verify stories. No fake posts
+                    allowed.
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                >
+                  <svg
+                    class="w-3 h-3 text-green-600"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold text-foreground">
+                    Simple & Honest
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    No complicated terms. What you see is what you get.
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Right: Trust Indicators -->
+          <!-- Right: Why Share Your Story -->
           <div>
             <div class="bg-white rounded-lg p-6 border border-border">
               <h4 class="text-xl font-bold text-foreground mb-4">
-                Trust Indicators
+                Why Share Your Story?
               </h4>
 
               <div class="space-y-4">
@@ -267,26 +226,14 @@
                   <div
                     class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"
                   >
-                    <svg
-                      class="w-5 h-5 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
+                    <Icon name="material-symbols:help-outline-rounded" size="20" class="text-green-300" />
                   </div>
                   <div>
                     <div class="font-semibold text-foreground">
-                      SSL Certified
+                      Help Your Community
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      End-to-end encryption
+                      Warn other families
                     </div>
                   </div>
                 </div>
@@ -295,26 +242,14 @@
                   <div
                     class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"
                   >
-                    <svg
-                      class="w-5 h-5 text-blue-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
+                    <Icon name="hugeicons:anonymous" size="20" class="text-blue-400" />
                   </div>
                   <div>
                     <div class="font-semibold text-foreground">
-                      Community Driven
+                      Completely Anonymous
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      Real families only
+                      No one knows it's you
                     </div>
                   </div>
                 </div>
@@ -323,26 +258,14 @@
                   <div
                     class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center"
                   >
-                    <svg
-                      class="w-5 h-5 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                      />
-                    </svg>
+                    <Icon name="fluent-emoji-high-contrast:seedling" size="20" class="text-purple-400" />
                   </div>
                   <div>
                     <div class="font-semibold text-foreground">
-                      No Ads, No Tracking
+                      Turn Pain into Purpose
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      100% free service
+                      Help others avoid your pain
                     </div>
                   </div>
                 </div>
@@ -351,26 +274,14 @@
                   <div
                     class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center"
                   >
-                    <svg
-                      class="w-5 h-5 text-orange-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="3 21v-4a4 4 0 014-4h5a4 4 0 014 4v4M16 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
+                    <Icon name="ion:time-outline" size="20" class="text-orange-400" />
                   </div>
                   <div>
                     <div class="font-semibold text-foreground">
-                      Pakistani Values
+                      It Takes 2 Minutes
                     </div>
                     <div class="text-sm text-muted-foreground">
-                      Built for our culture
+                      Simple form, quick share
                     </div>
                   </div>
                 </div>
@@ -420,12 +331,11 @@
       </div>
 
       <!-- Community Testimonials -->
-      <div
-        class="bg-gradient-to-r from-accent/5 to-secondary/10 rounded-2xl p-8 lg:p-12"
-      >
+      <!-- 
+      <div class="bg-gradient-to-r from-accent/5 to-secondary/10 rounded-2xl p-8 lg:p-12">
         <div class="text-center mb-8">
           <h3 class="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Pakistani Families Trust ScamAlert.pk
+            Pakistani Families Trust ScamAlert
           </h3>
           <p class="text-muted-foreground">
             Real feedback from real families across Pakistan
@@ -444,9 +354,7 @@
               </p>
             </div>
             <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center"
-              >
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <span class="text-sm font-semibold text-primary">AF</span>
               </div>
               <div>
@@ -467,9 +375,7 @@
               </p>
             </div>
             <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center"
-              >
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <span class="text-sm font-semibold text-primary">MK</span>
               </div>
               <div>
@@ -485,14 +391,12 @@
                 <span class="text-yellow-400">★★★★★</span>
               </div>
               <p class="text-sm text-muted-foreground italic">
-                "Meri ammi ko phone pe scam karne ki koshish hui. ScamAlert ki
-                stories padh kar unhe samajh aa gaya. Alhamdulillah!"
+                "Meri ammi ko phone pe scam karne ki koshish hui. ScamAlert 
+                ki stories padh kar unhe samajh aa gaya. Alhamdulillah!"
               </p>
             </div>
             <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center"
-              >
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <span class="text-sm font-semibold text-primary">SS</span>
               </div>
               <div>
@@ -503,6 +407,7 @@
           </Card>
         </div>
       </div>
+      -->
     </div>
   </section>
 </template>

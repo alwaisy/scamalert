@@ -16,7 +16,7 @@
         >
           Pakistan Ka Pehla
           <span class="text-primary">Scam Alert</span>
-          Platform
+          Community
         </h1>
 
         <!-- Urdu Subtitle -->
@@ -28,9 +28,9 @@
         <p
           class="text-lg sm:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          Real stories from real Pakistani families. Learn from others'
-          experiences to protect yourself and your loved ones from scams across
-          Pakistan and South Asia.
+          A simple platform where Pakistani families share their scam
+          experiences to warn others. Real stories, real protection - because
+          together we're stronger than any scammer.
         </p>
 
         <!-- Key Statistics -->
@@ -74,39 +74,19 @@
         <div
           class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
         >
-          <Button size="lg" class="w-full sm:w-auto">
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            Browse Scam Stories
-          </Button>
+          <NuxtLink to="/scams">
+            <Button size="lg" class="w-full sm:w-auto">
+              <Icon name="f7:book" class=" mr-2" size="20" />
+              Browse Scam Stories
+            </Button>
+          </NuxtLink>
 
-          <Button variant="outline" size="lg" class="w-full sm:w-auto">
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12-5c0 5.523-4.477 10-10 10S2 12.477 2 7s4.477-10 10-10 10 4.477 10 10z"
-              />
-            </svg>
-            Share Your Experience
-          </Button>
+          <NuxtLink to="/submit">
+            <Button variant="outline" size="lg" class="w-full sm:w-auto">
+              <Icon name="lucide:share" size="18" />
+              Share Your Experience
+            </Button>
+          </NuxtLink>
         </div>
 
         <!-- Trust Indicators -->
