@@ -71,7 +71,8 @@ onMounted(async () => {
   const { userId, secret } = route.query;
 
   if (!userId || !secret) {
-    error.value = "Invalid magic link. Please try signing in again.";
+    error.value =
+      "Invalid or expired magic link. Please request a new sign-in link.";
     isVerifying.value = false;
     return;
   }
@@ -80,16 +81,33 @@ onMounted(async () => {
     // Call the server-side verification endpoint
     await $fetch(`/api/magic-verify?userId=${userId}&secret=${secret}`);
 
+    // Refresh the auth store to reflect the new authentication state
+    const authStore = useAuthStore();
+    await authStore.refreshAuth();
+
     // If we reach here, verification was successful
-    // The server will handle the redirect to /scams
-    // But we'll also redirect client-side as backup
     setTimeout(() => {
       router.push("/scams");
     }, 1000);
   } catch (err: unknown) {
-    const errorObj = err as { message?: string };
-    error.value =
-      errorObj.message || "Verification failed. Please try signing in again.";
+    console.error("Magic link verification error:", err);
+    const errorObj = err as {
+      message?: string;
+      statusMessage?: string;
+      statusCode?: number;
+    };
+
+    // Provide more user-friendly error messages
+    if (errorObj.statusCode === 400) {
+      error.value =
+        "This magic link has expired or is invalid. Please request a new sign-in link.";
+    } else if (errorObj.statusMessage?.includes("Verification failed")) {
+      error.value =
+        "Unable to verify your sign-in link. Please try requesting a new one.";
+    } else {
+      error.value =
+        "Something went wrong during verification. Please try signing in again.";
+    }
   } finally {
     isVerifying.value = false;
   }

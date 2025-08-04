@@ -8,7 +8,13 @@ export default defineNuxtRouteMiddleware(async (_to) => {
 
   // Initialize auth if not already done
   if (!authStore.isInitialized) {
-    await authStore.initializeAuth();
+    try {
+      await authStore.initializeAuth();
+    } catch (error) {
+      console.error("Auth initialization failed in middleware:", error);
+      // If auth fails, redirect to login
+      return navigateTo("/login");
+    }
   }
 
   // Check if user is authenticated

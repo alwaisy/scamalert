@@ -65,6 +65,12 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
+    async refreshAuth() {
+      // Force refresh auth state (useful after login/logout)
+      this.isInitialized = false;
+      return await this.checkAuth();
+    },
+
     async initializeAuth() {
       if (!this.isInitialized) {
         await this.checkAuth();

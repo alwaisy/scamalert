@@ -2,8 +2,8 @@ import { config } from "dotenv";
 import type { Config } from "drizzle-kit";
 
 // load env
-// config({ path: ".env.local" });
-config({ path: ".env.prod" });
+config({ path: ".env.local" });
+// config({ path: ".env.prod" });
 
 export default {
   schema: ["./server/db/user-schema.ts", "./server/db/scam-schema.ts"],
