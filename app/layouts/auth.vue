@@ -1,17 +1,12 @@
 <template>
   <div class="min-h-screen bg-background flex flex-col">
-    <!-- Minimal Header -->
-    <header class="border-b border-border bg-card flex-shrink-0">
+    <!-- Enhanced Header -->
+    <header
+      class="border-b border-border/50 bg-background/80 backdrop-blur-sm flex-shrink-0"
+    >
       <div class="mx-auto max-w-screen-lg px-4 py-4">
         <div class="flex items-center justify-center">
-          <NuxtLink to="/" class="flex items-center gap-2 font-medium">
-            <div
-              class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md"
-            >
-              <Shield class="size-4" />
-            </div>
-            ScamAlert
-          </NuxtLink>
+          <SharedLogo />
         </div>
       </div>
     </header>
@@ -21,19 +16,22 @@
       <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-border bg-card flex-shrink-0">
+    <!-- Minimal Footer -->
+    <footer
+      class="border-t border-border/50 bg-background/80 backdrop-blur-sm flex-shrink-0"
+    >
       <div class="mx-auto max-w-screen-lg px-4 py-6">
         <div
           class="flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <div class="text-center md:text-left">
             <p class="text-sm text-muted-foreground">
-              &copy; 2024 ScamAlert. Stay safe, stay informed.
+              &copy; {{ new Date().getFullYear() }} ScamAlert.pk • Protecting
+              Pakistani families
             </p>
           </div>
 
-          <!-- Help Link (always show) -->
+          <!-- Help Link -->
           <div class="flex items-center gap-4">
             <NuxtLink
               to="/guide"
@@ -41,6 +39,14 @@
             >
               Help & Guide
             </NuxtLink>
+            <a
+              href="https://reddit.com/r/PakStartups"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Community
+            </a>
           </div>
         </div>
       </div>
@@ -49,5 +55,5 @@
 </template>
 
 <script setup lang="ts">
-import { Shield } from "lucide-vue-next";
+// Clean auth layout with enhanced header
 </script>

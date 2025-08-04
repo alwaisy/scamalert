@@ -1,53 +1,43 @@
 <template>
   <Card
-    class="bg-gradient-to-r from-primary/10 to-accent/10 overflow-hidden relative shadow-none border-0"
+    class="bg-gradient-to-r from-primary/10 to-accent/10 overflow-hidden relative border-0 shadow-sm"
   >
-    <!-- Background Illustration -->
-    <!-- <div
-      class="absolute right-0 top-0 bottom-0 flex items-center opacity-20 pointer-events-none"
-    >
-      <img
-        src="/assets/images/scams-hero.svg"
-        alt=""
-        class="h-full w-auto max-w-xs lg:max-w-sm object-contain"
-      />
-    </div> -->
-
     <!-- Content -->
     <CardContent class="relative z-10 p-8 lg:p-12 text-center">
-      <h1
-        class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 leading-tight"
-      >
-        Pakistan Scam Database
-      </h1>
-      <p
-        class="text-base sm:text-lg lg:text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto"
-      >
-        Real stories from real victims. Learn from others' experiences to
-        protect yourself from scams across Pakistan. Together, we can build a
-        safer digital community.
-      </p>
+      <div class="mb-6">
+        <!-- <div
+          class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4"
+        >
+          <Icon name="lucide:shield-alert" class="w-4 h-4 text-primary" />
+          <span class="text-sm font-medium text-primary">Live Database</span>
+        </div> -->
+        <h1
+          class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 leading-tight"
+        >
+          Pakistan Scam Database
+        </h1>
+        <p
+          class="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto"
+        >
+          Real stories from real victims. Learn from others' experiences to
+          protect yourself and your family from scams across Pakistan.
+        </p>
+      </div>
 
-      <!-- Stats with Badges -->
-      <div
-        class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
-      >
-        <Badge variant="outline" class="text-lg px-4 py-2">
-          <span class="font-bold text-primary">{{ totalScams }}</span>
-          <span class="ml-2">Scams</span>
-        </Badge>
+      <!-- Enhanced Stats -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div
+          class="flex items-center gap-2 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg px-4 py-3"
+        >
+          <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span class="font-bold text-primary text-lg">{{ totalScams }}</span>
+          <span class="text-muted-foreground">Reports</span>
+        </div>
 
-        <!-- Upvotes Badge - DISABLED FOR MVP -->
-        <!-- <Badge variant="outline" class="text-lg px-4 py-2 flex">
-          <span class="font-bold text-primary">{{ totalUpvotes }}</span>
-          <span class="ml-2">Votes</span>
-        </Badge> -->
-
-        <!-- Comments Badge - DISABLED FOR MVP -->
-        <!-- <Badge variant="outline" class="text-lg px-4 py-2">
-          <span class="font-bold text-primary">{{ totalComments }}</span>
-          <span class="ml-2">Comments</span>
-        </Badge> -->
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <Icon name="lucide:clock" class="w-4 h-4" />
+          <span>Updated daily</span>
+        </div>
       </div>
     </CardContent>
   </Card>

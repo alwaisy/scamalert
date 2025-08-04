@@ -1,6 +1,6 @@
 <template>
   <NuxtErrorBoundary @error="handleError">
-    <div class="py-8 space-y-8">
+    <div class="py-6 space-y-6">
       <!-- Hero Section -->
       <ScamsHero
         :total-scams="data?.length || 0"
@@ -30,13 +30,16 @@
       />
 
       <!-- Loading State -->
-      <div v-if="pending" class="space-y-6">
+      <div v-if="pending" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Card v-for="i in 6" :key="i" class="p-6">
+          <Card v-for="i in 6" :key="i" class="p-6 bg-card/50">
             <div class="space-y-4">
               <Skeleton class="h-4 w-3/4" />
               <Skeleton class="h-4 w-full" />
               <Skeleton class="h-4 w-2/3" />
+              <div class="pt-2 border-t border-border/50">
+                <Skeleton class="h-3 w-1/2" />
+              </div>
             </div>
           </Card>
         </div>
@@ -44,23 +47,25 @@
 
       <!-- Error State -->
       <div v-else-if="error" class="text-center py-12">
-        <div class="text-destructive mb-4">
-          <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-4" />
-          <h2 class="text-xl font-semibold">Failed to Load Scams</h2>
-          <p class="text-muted-foreground mt-2">
+        <div
+          class="bg-destructive/5 border border-destructive/20 rounded-lg p-8 max-w-md mx-auto"
+        >
+          <Icon
+            name="lucide:alert-circle"
+            class="w-12 h-12 mx-auto mb-4 text-destructive"
+          />
+          <h2 class="text-xl font-semibold mb-2">Failed to Load Scams</h2>
+          <p class="text-muted-foreground mb-4">
             {{ error?.message || "An unexpected error occurred" }}
           </p>
+          <Button class="mt-2" @click="refresh">
+            <Icon name="lucide:refresh-cw" class="w-4 h-4 mr-2" />
+            Try Again
+          </Button>
         </div>
-        <Button class="mt-4" @click="refresh"> Try Again </Button>
       </div>
 
       <!-- Results Count -->
-      <div
-        v-else-if="pagination && data && data.length > 0"
-        class="text-sm text-muted-foreground"
-      >
-        Showing {{ data.length }} of {{ pagination.total }} scams
-      </div>
 
       <!-- Scams Grid -->
       <div
@@ -78,42 +83,63 @@
       <!-- Empty State -->
       <div
         v-else-if="!pending && (!data || data.length === 0)"
-        class="text-center py-12"
+        class="text-center py-16"
       >
-        <Icon
-          name="lucide:search"
-          class="w-12 h-12 mx-auto mb-4 text-muted-foreground"
-        />
-        <h2 class="text-xl font-semibold">No Scams Found</h2>
-        <p class="text-muted-foreground mt-2">
-          Try adjusting your filters or search terms.
-        </p>
+        <div class="max-w-md mx-auto">
+          <div
+            class="bg-muted/30 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6"
+          >
+            <Icon name="lucide:search" class="w-8 h-8 text-muted-foreground" />
+          </div>
+          <h2 class="text-xl font-semibold mb-2">No Scams Found</h2>
+          <p class="text-muted-foreground mb-6">
+            Try adjusting your filters or search terms, or be the first to
+            report a scam.
+          </p>
+          <Button variant="outline" @click="$router.push('/submit')">
+            <Icon name="lucide:plus" class="w-4 h-4 mr-2" />
+            Report First Scam
+          </Button>
+        </div>
       </div>
 
       <!-- Pagination -->
-      <ScamsPagination
+      <div
         v-if="pagination && pagination.totalPages > 1"
-        :current-page="pagination.page"
-        :total-pages="pagination.totalPages"
-        @update:current-page="handlePageChange"
-      />
+        class="flex justify-center pt-4"
+      >
+        <ScamsPagination
+          :current-page="pagination.page"
+          :total-pages="pagination.totalPages"
+          @update:current-page="handlePageChange"
+        />
+      </div>
     </div>
 
     <!-- Error Template -->
     <template #error="{ error: templateError, clearError }">
       <div class="text-center py-12">
-        <div class="text-destructive mb-4">
-          <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-4" />
-          <h2 class="text-xl font-semibold">Something went wrong</h2>
-          <p class="text-muted-foreground mt-2">
+        <div
+          class="bg-destructive/5 border border-destructive/20 rounded-lg p-8 max-w-md mx-auto"
+        >
+          <Icon
+            name="lucide:alert-circle"
+            class="w-12 h-12 mx-auto mb-4 text-destructive"
+          />
+          <h2 class="text-xl font-semibold mb-2">Something went wrong</h2>
+          <p class="text-muted-foreground mb-4">
             {{ templateError?.message || "An unexpected error occurred" }}
           </p>
-        </div>
-        <div class="flex gap-2 justify-center">
-          <Button class="mt-4" @click="clearError"> Try Again </Button>
-          <Button class="mt-4" variant="outline" @click="navigateTo('/scams')">
-            Go to Scams
-          </Button>
+          <div class="flex gap-2 justify-center">
+            <Button @click="clearError">
+              <Icon name="lucide:refresh-cw" class="w-4 h-4 mr-2" />
+              Try Again
+            </Button>
+            <Button variant="outline" @click="navigateTo('/scams')">
+              <Icon name="lucide:home" class="w-4 h-4 mr-2" />
+              Go Home
+            </Button>
+          </div>
         </div>
       </div>
     </template>

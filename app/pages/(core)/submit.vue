@@ -1,80 +1,164 @@
 <template>
-  <div class="py-8">
+  <div class="py-6">
     <div class="max-w-2xl mx-auto">
-      <!-- Header -->
+      <!-- Enhanced Header -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-foreground mb-2">
+        <div
+          class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4"
+        >
+          <Icon name="lucide:shield-alert" class="w-4 h-4 text-primary" />
+          <span class="text-sm font-medium text-primary">Report Center</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-foreground mb-3">
           Share Your Experience
         </h1>
-        <p class="text-muted-foreground">
-          Help others by sharing your scam encounter. Your story could save
-          someone from falling victim.
+        <p class="text-lg text-muted-foreground max-w-lg mx-auto">
+          Help protect others by sharing your scam encounter. Your story could
+          save someone from falling victim.
         </p>
       </div>
 
+      <!-- Progress Steps -->
+      <div class="mb-8">
+        <div class="flex items-center justify-center space-x-4">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium"
+            >
+              1
+            </div>
+            <span class="text-sm font-medium">Details</span>
+          </div>
+          <div class="w-12 h-0.5 bg-border"></div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-medium"
+            >
+              2
+            </div>
+            <span class="text-sm text-muted-foreground">Evidence</span>
+          </div>
+          <div class="w-12 h-0.5 bg-border"></div>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-medium"
+            >
+              3
+            </div>
+            <span class="text-sm text-muted-foreground">Submit</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Submit Form -->
-      <Card class="p-6">
-        <form class="space-y-6" @submit.prevent="handleSubmit">
-          <!-- Scam Type -->
-          <div class="space-y-2">
-            <label for="scamType" class="text-sm font-medium text-foreground">
-              Scam Type *
-            </label>
-            <Select v-model="form.type" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select scam type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="mobile-banking">Mobile Banking</SelectItem>
-                <SelectItem value="job-scams">Job Scams</SelectItem>
-                <SelectItem value="property">Property</SelectItem>
-                <SelectItem value="online-shopping">Online Shopping</SelectItem>
-                <SelectItem value="investment">Investment</SelectItem>
-                <SelectItem value="education">Education</SelectItem>
-                <SelectItem value="romance">Romance</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
+      <Card class="overflow-hidden border-0 shadow-sm">
+        <div
+          class="bg-gradient-to-r from-orange-500/5 to-red-500/5 p-6 border-b"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center"
+            >
+              <Icon
+                name="lucide:alert-triangle"
+                class="w-5 h-5 text-orange-600"
+              />
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-foreground">
+                Report Details
+              </h2>
+              <p class="text-sm text-muted-foreground">Tell us what happened</p>
+            </div>
           </div>
+        </div>
 
-          <!-- Title -->
-          <div class="space-y-2">
-            <label for="title" class="text-sm font-medium text-foreground">
-              Title *
-            </label>
-            <Input
-              id="title"
-              v-model="form.title"
-              placeholder="Brief description of the scam"
-              required
-            />
-          </div>
+        <CardContent class="p-6">
+          <form class="space-y-6" @submit.prevent="handleSubmit">
+            <!-- Scam Type -->
+            <div class="space-y-3">
+              <label
+                for="scamType"
+                class="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Icon name="lucide:tag" class="w-4 h-4" />
+                Scam Type *
+              </label>
+              <Select v-model="form.type" required>
+                <SelectTrigger class="h-11">
+                  <SelectValue placeholder="Select scam type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mobile-banking"
+                    >📱 Mobile Banking</SelectItem
+                  >
+                  <SelectItem value="job-scams">💼 Job Scams</SelectItem>
+                  <SelectItem value="property">🏠 Property</SelectItem>
+                  <SelectItem value="online-shopping"
+                    >🛒 Online Shopping</SelectItem
+                  >
+                  <SelectItem value="investment">💰 Investment</SelectItem>
+                  <SelectItem value="education">🎓 Education</SelectItem>
+                  <SelectItem value="romance">💕 Romance</SelectItem>
+                  <SelectItem value="other">🔧 Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          <!-- Description -->
-          <div class="space-y-2">
-            <label for="content" class="text-sm font-medium text-foreground">
-              Your Experience *
-            </label>
-            <Textarea
-              id="content"
-              v-model="form.content"
-              placeholder="Describe what happened, how you encountered the scam, and any red flags you noticed..."
-              class="min-h-[200px]"
-              required
-            />
-          </div>
+            <!-- Title -->
+            <div class="space-y-3">
+              <label
+                for="title"
+                class="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Icon name="lucide:edit" class="w-4 h-4" />
+                Title *
+              </label>
+              <Input
+                id="title"
+                v-model="form.title"
+                placeholder="Brief description of the scam"
+                class="h-11"
+                required
+              />
+            </div>
 
-          <!-- Platforms -->
-          <div class="space-y-2">
-            <label for="platforms" class="text-sm font-medium text-foreground">
-              Platforms Used *
-            </label>
-            <div class="space-y-2">
+            <!-- Description -->
+            <div class="space-y-3">
+              <label
+                for="content"
+                class="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Icon name="lucide:message-square" class="w-4 h-4" />
+                Your Experience *
+              </label>
+              <Textarea
+                id="content"
+                v-model="form.content"
+                placeholder="Describe what happened, how you encountered the scam, and any red flags you noticed..."
+                class="min-h-[160px] resize-none"
+                required
+              />
+              <p class="text-xs text-muted-foreground">
+                Be as detailed as possible to help others recognize similar
+                scams
+              </p>
+            </div>
+
+            <!-- Platforms -->
+            <div class="space-y-3">
+              <label
+                for="platforms"
+                class="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Icon name="lucide:smartphone" class="w-4 h-4" />
+                Platforms Used *
+              </label>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <label
                   v-for="platform in availablePlatforms"
                   :key="platform"
-                  class="flex items-center space-x-2 cursor-pointer"
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
                 >
                   <Checkbox
                     :model-value="form.platforms.includes(platform)"
@@ -93,152 +177,194 @@
                       }
                     "
                   />
-                  <span class="text-sm">{{ platform }}</span>
+                  <span class="text-sm font-medium">{{ platform }}</span>
                 </label>
               </div>
             </div>
-          </div>
 
-          <!-- Locations -->
-          <div class="space-y-2">
-            <label for="locations" class="text-sm font-medium text-foreground">
-              Locations *
-            </label>
-            <div class="space-y-2">
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <label
-                  v-for="location in availableLocations"
-                  :key="location"
-                  class="flex items-center space-x-2 cursor-pointer"
-                >
-                  <Checkbox
-                    :model-value="form.locations.includes(location)"
-                    class="rounded"
-                    @update:model-value="
-                      (checked) => {
-                        if (checked) {
-                          if (!form.locations.includes(location)) {
-                            form.locations.push(location);
-                          }
-                        } else {
-                          form.locations = form.locations.filter(
-                            (l) => l !== location
-                          );
-                        }
-                      }
-                    "
-                  />
-                  <span class="text-sm">{{ location }}</span>
-                </label>
-              </div>
-              <Input
-                v-model="customLocation"
-                placeholder="Add custom location"
-                @keyup.enter="addCustomLocation"
-              />
-            </div>
-          </div>
-
-          <!-- Anonymous Post -->
-          <div class="space-y-2">
-            <label class="flex items-center space-x-2 cursor-pointer">
-              <Checkbox v-model="form.isAnonymous" class="rounded" />
-              <span class="text-sm font-medium text-foreground">
-                Post anonymously
-              </span>
-            </label>
-          </div>
-
-          <!-- Amount Lost -->
-          <div class="space-y-2">
-            <label for="amountLost" class="text-sm font-medium text-foreground">
-              Amount Lost (optional)
-            </label>
-            <div class="space-y-2">
-              <div class="flex items-center space-x-2">
-                <Checkbox v-model="form.hasFinancialLoss" class="rounded" />
-                <span class="text-sm text-foreground">
-                  I experienced financial loss
-                </span>
-              </div>
-              <Input
-                v-if="form.hasFinancialLoss"
-                id="amountLost"
-                v-model="form.amountLost"
-                type="number"
-                placeholder="Enter amount in PKR"
-                min="0"
-                step="100"
-              />
-            </div>
-          </div>
-
-          <!-- Evidence Images -->
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-foreground">
-              Evidence Images (optional)
-            </label>
-            <div class="space-y-4">
-              <!-- Image Upload Area -->
-              <div
-                class="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center"
+            <!-- Locations -->
+            <div class="space-y-3">
+              <label
+                for="locations"
+                class="text-sm font-medium text-foreground flex items-center gap-2"
               >
-                <input
-                  ref="fileInput"
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  class="hidden"
-                  @change="handleFileSelect"
-                />
-                <div class="space-y-2">
-                  <div class="text-muted-foreground">
-                    <Upload class="mx-auto h-8 w-8 mb-2" />
-                    <p>Click to upload or drag and drop</p>
-                    <p class="text-xs">PNG, JPG, GIF, WebP up to 5MB each</p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    @click="fileInput?.click()"
+                <Icon name="lucide:map-pin" class="w-4 h-4" />
+                Locations *
+              </label>
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <label
+                    v-for="location in availableLocations"
+                    :key="location"
+                    class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
                   >
-                    Select Images
-                  </Button>
+                    <Checkbox
+                      :model-value="form.locations.includes(location)"
+                      class="rounded"
+                      @update:model-value="
+                        (checked) => {
+                          if (checked) {
+                            if (!form.locations.includes(location)) {
+                              form.locations.push(location);
+                            }
+                          } else {
+                            form.locations = form.locations.filter(
+                              (l) => l !== location
+                            );
+                          }
+                        }
+                      "
+                    />
+                    <span class="text-sm font-medium">{{ location }}</span>
+                  </label>
+                </div>
+                <Input
+                  v-model="customLocation"
+                  placeholder="Add custom location"
+                  class="h-11"
+                  @keyup.enter="addCustomLocation"
+                />
+              </div>
+            </div>
+
+            <!-- Options Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Anonymous Post -->
+              <div class="space-y-3">
+                <label
+                  class="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <Icon name="lucide:eye-off" class="w-4 h-4" />
+                  Privacy Options
+                </label>
+                <label
+                  class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+                >
+                  <Checkbox v-model="form.isAnonymous" class="rounded" />
+                  <span class="text-sm font-medium">Post anonymously</span>
+                </label>
+              </div>
+
+              <!-- Amount Lost -->
+              <div class="space-y-3">
+                <label
+                  for="amountLost"
+                  class="text-sm font-medium text-foreground flex items-center gap-2"
+                >
+                  <Icon name="lucide:dollar-sign" class="w-4 h-4" />
+                  Financial Impact
+                </label>
+                <div class="space-y-3">
+                  <label
+                    class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+                  >
+                    <Checkbox v-model="form.hasFinancialLoss" class="rounded" />
+                    <span class="text-sm font-medium"
+                      >I experienced financial loss</span
+                    >
+                  </label>
+                  <Input
+                    v-if="form.hasFinancialLoss"
+                    id="amountLost"
+                    v-model="form.amountLost"
+                    type="number"
+                    placeholder="Amount in PKR"
+                    class="h-11"
+                    min="0"
+                    step="100"
+                  />
                 </div>
               </div>
+            </div>
 
-              <!-- Uploaded Images Preview -->
-              <div v-if="uploadedImages.length > 0" class="space-y-2">
-                <h4 class="text-sm font-medium">Uploaded Images:</h4>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <div
-                    v-for="(image, index) in uploadedImages"
-                    :key="index"
-                    class="relative group"
-                  >
-                    <img
-                      :src="image.url"
-                      :alt="image.fileName"
-                      class="w-full h-24 object-cover rounded-lg border"
-                    />
+            <!-- Evidence Images -->
+            <div class="space-y-3">
+              <label
+                class="text-sm font-medium text-foreground flex items-center gap-2"
+              >
+                <Icon name="lucide:image" class="w-4 h-4" />
+                Evidence Images (optional)
+              </label>
+              <div class="space-y-4">
+                <!-- Image Upload Area -->
+                <div
+                  class="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors"
+                >
+                  <input
+                    ref="fileInput"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    class="hidden"
+                    @change="handleFileSelect"
+                  />
+                  <div class="space-y-3">
+                    <div
+                      class="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center"
+                    >
+                      <Icon
+                        name="lucide:upload"
+                        class="w-6 h-6 text-muted-foreground"
+                      />
+                    </div>
+                    <div class="text-muted-foreground">
+                      <p class="font-medium">
+                        Click to upload or drag and drop
+                      </p>
+                      <p class="text-sm">PNG, JPG, GIF, WebP up to 5MB each</p>
+                    </div>
                     <Button
                       type="button"
-                      variant="destructive"
-                      size="sm"
-                      class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                      @click="removeImage(index)"
+                      variant="outline"
+                      class="gap-2"
+                      @click="fileInput?.click()"
                     >
-                      <X class="h-3 w-3" />
+                      <Icon name="lucide:plus" class="w-4 h-4" />
+                      Select Images
                     </Button>
                   </div>
                 </div>
-              </div>
 
-              <!-- Upload Progress -->
-              <div v-if="isUploading" class="space-y-2">
-                <div class="flex items-center space-x-2">
+                <!-- Uploaded Images Preview -->
+                <div v-if="uploadedImages.length > 0" class="space-y-3">
+                  <h4 class="text-sm font-medium flex items-center gap-2">
+                    <Icon
+                      name="lucide:check-circle"
+                      class="w-4 h-4 text-green-600"
+                    />
+                    Uploaded Images ({{ uploadedImages.length }})
+                  </h4>
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div
+                      v-for="(image, index) in uploadedImages"
+                      :key="index"
+                      class="relative group"
+                    >
+                      <img
+                        :src="image.url"
+                        :alt="image.fileName"
+                        class="w-full h-24 object-cover rounded-lg border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
+                        @click="removeImage(index)"
+                      >
+                        <Icon name="lucide:x" class="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Upload Progress -->
+                <div
+                  v-if="isUploading"
+                  class="flex items-center justify-center gap-3 py-4"
+                >
                   <div
-                    class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"
+                    class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
                   ></div>
                   <span class="text-sm text-muted-foreground"
                     >Uploading images...</span
@@ -246,16 +372,26 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Submit Button -->
-          <div class="flex justify-end">
-            <Button type="submit" :disabled="isSubmitting">
-              <span v-if="isSubmitting">Submitting...</span>
-              <span v-else>Submit Experience</span>
-            </Button>
-          </div>
-        </form>
+            <!-- Submit Button -->
+            <div class="pt-6">
+              <Button
+                type="submit"
+                :disabled="isSubmitting"
+                class="w-full h-12 gap-2"
+              >
+                <Icon
+                  v-if="isSubmitting"
+                  name="lucide:loader-2"
+                  class="w-4 h-4 animate-spin"
+                />
+                <Icon v-else name="lucide:send" class="w-4 h-4" />
+                <span v-if="isSubmitting">Submitting...</span>
+                <span v-else>Submit Experience</span>
+              </Button>
+            </div>
+          </form>
+        </CardContent>
       </Card>
 
       <!-- Success Message with Confetti -->
@@ -270,33 +406,30 @@
           class="fixed inset-0 pointer-events-none z-50"
         />
 
-        <Card class="p-6 bg-green-50 border-green-200">
-          <div class="text-center space-y-4">
-            <div class="flex items-center justify-center space-x-2">
+        <Card class="overflow-hidden border-0 shadow-sm">
+          <div class="bg-gradient-to-r from-green-500/10 to-blue-500/10 p-6">
+            <div class="text-center space-y-4">
               <div
-                class="w-3 h-3 bg-green-500 rounded-full animate-pulse"
-              ></div>
-              <p class="text-green-800 font-medium text-lg">
-                {{ successMessage }}
-              </p>
-            </div>
+                class="w-16 h-16 mx-auto bg-green-500/20 rounded-full flex items-center justify-center"
+              >
+                <Icon name="lucide:check" class="w-8 h-8 text-green-600" />
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-foreground mb-2">
+                  {{ successMessage }}
+                </h3>
+                <p class="text-muted-foreground">
+                  Your experience has been successfully shared and is now live!
+                </p>
+              </div>
 
-            <div class="space-y-3">
-              <p class="text-green-700 text-sm">
-                Your experience has been successfully shared and is now live!
-              </p>
-
-              <div class="flex justify-center space-x-3">
-                <Button
-                  class="bg-green-600 hover:bg-green-700 text-white"
-                  @click="viewScamDetails"
-                >
-                  <Icon name="lucide:eye" class="w-4 h-4 mr-2" />
+              <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <Button class="gap-2" @click="viewScamDetails">
+                  <Icon name="lucide:eye" class="w-4 h-4" />
                   View My Experience
                 </Button>
-
-                <Button variant="outline" @click="submitAnother">
-                  <Icon name="lucide:plus" class="w-4 h-4 mr-2" />
+                <Button variant="outline" class="gap-2" @click="submitAnother">
+                  <Icon name="lucide:plus" class="w-4 h-4" />
                   Submit Another
                 </Button>
               </div>
@@ -307,11 +440,16 @@
 
       <!-- Error Message -->
       <div v-if="error" class="mt-6">
-        <Card class="p-4 bg-red-50 border-red-200">
-          <div class="flex items-center space-x-2">
-            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-            <p class="text-red-800 font-medium">{{ error }}</p>
-          </div>
+        <Card class="border-destructive/20 bg-destructive/5">
+          <CardContent class="p-4">
+            <div class="flex items-center gap-3">
+              <Icon
+                name="lucide:alert-circle"
+                class="w-5 h-5 text-destructive"
+              />
+              <p class="text-destructive font-medium">{{ error }}</p>
+            </div>
+          </CardContent>
         </Card>
       </div>
     </div>
@@ -319,7 +457,6 @@
 </template>
 
 <script setup lang="ts">
-import { Upload, X } from "lucide-vue-next";
 import { SCAM_MESSAGES } from "~/config/messages";
 import type { ApiError } from "~/lib/types";
 

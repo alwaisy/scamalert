@@ -4,11 +4,7 @@
     <header class="border-b border-border bg-card flex-shrink-0">
       <div class="mx-auto max-w-screen-lg px-4 py-4">
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <NuxtLink to="/" class="text-2xl font-bold text-primary">
-              ScamAlert
-            </NuxtLink>
-          </div>
+          <SharedLogo />
           <nav class="hidden md:flex items-center space-x-6">
             <NuxtLink
               to="/scams"

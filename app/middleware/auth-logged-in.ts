@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (_to) => {
   // Skip auth check during SSR to avoid issues
-  if (process.server) {
+  if (import.meta.server) {
     return;
   }
 

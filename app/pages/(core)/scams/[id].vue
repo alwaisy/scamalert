@@ -1,38 +1,54 @@
 <template>
   <NuxtErrorBoundary @error="handleError">
-    <div class="py-8 space-y-8">
+    <div class="py-6 space-y-6">
       <!-- Back Button -->
-      <Button variant="outline" size="sm">
-        <NuxtLink to="/scams">
-          <Icon name="lucide:arrow-left" class="w-4 h-4 mr-2" />
-          Back to Scams
-        </NuxtLink>
-      </Button>
+      <div class="flex items-center justify-between">
+        <Button variant="outline" size="sm" class="gap-2" as-child>
+          <NuxtLink to="/scams">
+            <Icon name="lucide:arrow-left" class="w-4 h-4" />
+            Back to Scams
+          </NuxtLink>
+        </Button>
+
+        <div v-if="data" class="flex items-center gap-2">
+          <Button variant="ghost" size="sm" @click="handleShare">
+            <Icon name="lucide:share" class="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
 
       <!-- Loading State -->
       <div v-if="pending" class="space-y-6">
-        <Skeleton class="h-8 w-3/4" />
-        <Skeleton class="h-4 w-full" />
-        <Skeleton class="h-4 w-2/3" />
-        <Skeleton class="h-4 w-1/2" />
+        <div class="space-y-4">
+          <Skeleton class="h-8 w-3/4" />
+          <Skeleton class="h-4 w-1/2" />
+          <Skeleton class="h-6 w-24" />
+        </div>
+        <Card class="p-6">
+          <div class="space-y-3">
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-2/3" />
+          </div>
+        </Card>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="text-center py-12">
+      <div v-else-if="error" class="text-center py-16">
         <div class="text-destructive mb-4">
           <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-4" />
           <h2 class="text-xl font-semibold">Scam Not Found</h2>
           <p class="text-muted-foreground mt-2">
-            {{ error?.message || "An unexpected error occurred" }}
+            {{ error?.message || "The scam you're looking for doesn't exist" }}
           </p>
         </div>
-        <Button class="mt-4" as-child>
+        <Button as-child>
           <NuxtLink to="/scams">Back to Scams</NuxtLink>
         </Button>
       </div>
 
       <!-- Scam Details -->
-      <div v-else-if="data" class="space-y-4">
+      <div v-else-if="data" class="space-y-6">
         <!-- Header -->
         <ScamHeader
           :title="data.title"
@@ -40,6 +56,7 @@
           :is-anonymous="data.isAnonymous"
           :author-username="data.author.username"
           :upvotes-count="data.upvotesCount"
+          :created-at="data.createdAt"
         />
 
         <!-- Content -->
@@ -52,32 +69,39 @@
         <ScamMetadata :platforms="data.platforms" :locations="data.locations" />
 
         <!-- Actions -->
-        <!-- <Card>
+        <Card>
           <CardContent>
-            <ScamActions
-              :upvotes-count="data.upvotesCount"
-              :scam-id="data.scamId"
-              :is-upvoted="data.isUpvoted"
-              @update:upvotes-count="handleUpvotesUpdate"
-              @update:is-upvoted="handleIsUpvotedUpdate"
-            />
+            <div class="flex items-center justify-between">
+              <div class="text-sm text-muted-foreground">
+                Share this report to help others stay safe
+              </div>
+              <div class="flex gap-2">
+                <Button variant="outline" size="sm" @click="handleShare">
+                  <Icon name="lucide:share" class="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+                <Button variant="outline" size="sm" as-child>
+                  <NuxtLink to="/submit">
+                    <Icon name="lucide:plus" class="w-4 h-4 mr-2" />
+                    Report Similar
+                  </NuxtLink>
+                </Button>
+              </div>
+            </div>
           </CardContent>
-        </Card> -->
-
-        <!-- Comments Section - DISABLED FOR MVP -->
-        <!-- <ScamComments :comments="data.comments" /> -->
+        </Card>
       </div>
 
       <!-- Not Found State -->
-      <div v-else-if="!pending && !data" class="text-center py-12">
+      <div v-else-if="!pending && !data" class="text-center py-16">
         <div class="text-muted-foreground mb-4">
           <Icon name="lucide:search" class="w-12 h-12 mx-auto mb-4" />
           <h2 class="text-xl font-semibold">Scam Not Found</h2>
           <p class="text-muted-foreground mt-2">
-            The scam you're looking for doesn't exist.
+            The scam you're looking for doesn't exist or has been removed.
           </p>
         </div>
-        <Button class="mt-4" as-child>
+        <Button as-child>
           <NuxtLink to="/scams">Back to Scams</NuxtLink>
         </Button>
       </div>
@@ -94,8 +118,8 @@
           </p>
         </div>
         <div class="flex gap-2 justify-center">
-          <Button class="mt-4" @click="clearError"> Try Again </Button>
-          <Button class="mt-4" variant="outline" @click="navigateTo('/scams')">
+          <Button @click="clearError">Try Again</Button>
+          <Button variant="outline" @click="navigateTo('/scams')">
             Back to Scams
           </Button>
         </div>
@@ -105,6 +129,8 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from "vue-sonner";
+
 // Route params
 const route = useRoute();
 const scamId = route.params.id as string;
@@ -112,7 +138,6 @@ const scamId = route.params.id as string;
 // Page meta
 definePageMeta({
   layout: "core",
-  // middleware: ["auth-logged-in"],
 });
 
 // API composable
@@ -123,8 +148,8 @@ const { data, pending, error } = await useAsyncData(
   `scam-${scamId}`,
   () => fetchScam(scamId),
   {
-    server: true, // Enable SSR for better SEO
-    default: () => null, // Provide default null
+    server: true,
+    default: () => null,
   }
 );
 
@@ -133,29 +158,24 @@ onServerPrefetch(async () => {
   await fetchScam(scamId);
 });
 
+// Actions
+const config = useRuntimeConfig();
+const scamUrl = `${config.public.clientUrl}/scams/${scamId}`;
+
+const handleShare = async () => {
+  try {
+    await navigator.clipboard.writeText(scamUrl);
+    toast("Link copied to clipboard");
+  } catch (error) {
+    console.error("Failed to copy:", error);
+    toast("Failed to copy link");
+  }
+};
+
 // Error handler
 const handleError = (err: Error) => {
   console.error("Scam detail page error:", err);
 };
-
-/* // Handle upvote updates
-const handleUpvotesUpdate = (count: number) => {
-  console.log("Received upvotes update:", count);
-  if (data.value) {
-    data.value.upvotesCount = count;
-    console.log("Updated upvotes count in data");
-  }
-};
-
-const handleIsUpvotedUpdate = (value: boolean) => {
-  console.log("Received isUpvoted update:", value);
-  if (data.value) {
-    data.value.isUpvoted = value;
-    console.log("Updated isUpvoted in data");
-    // Force reactivity
-    triggerRef(data);
-  }
-}; */
 
 // SEO
 useHead(() => ({

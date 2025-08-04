@@ -23,7 +23,7 @@
             >
               <p class="text-sm text-destructive">{{ error }}</p>
             </div>
-            <Button @click="goToLogin" variant="outline" class="w-full">
+            <Button variant="outline" class="w-full" @click="goToLogin">
               Back to Sign In
             </Button>
           </div>
