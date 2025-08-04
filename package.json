@@ -14,10 +14,7 @@
     "check": "bun run lint && bun type",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push",
-    "db:seed": "bun run server/db/seed.ts",
-    "db:clear": "bun run server/db/clear.ts"
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@libsql/client": "^0.15.10",
