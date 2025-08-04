@@ -26,7 +26,7 @@
         >
           <div class="text-center md:text-left">
             <p class="text-sm text-muted-foreground">
-              &copy; {{ new Date().getFullYear() }} ScamAlert.pk • Protecting
+              &copy; {{ new Date().getFullYear() }} ScamAlert • Protecting
               Pakistani families
             </p>
           </div>

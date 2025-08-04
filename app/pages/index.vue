@@ -32,7 +32,7 @@ definePageMeta({
 // SEO optimization for Pakistan and South Asia
 useHead({
   title:
-    "ScamAlert.pk - Pakistan Ka Pehla Scam Alert Platform | Protect Your Family",
+    "ScamAlert - Pakistan Ka Pehla Scam Alert Platform | Protect Your Family",
   meta: [
     {
       name: "description",
@@ -46,7 +46,7 @@ useHead({
     },
     {
       property: "og:title",
-      content: "ScamAlert.pk - Protect Pakistani Families from Scams",
+      content: "ScamAlert - Protect Pakistani Families from Scams",
     },
     {
       property: "og:description",

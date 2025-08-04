@@ -4,7 +4,7 @@
     <section class="bg-gradient-to-r from-primary/10 to-accent/10 py-16">
       <div class="mx-auto max-w-screen-lg px-4 text-center">
         <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
-          About ScamAlert.pk
+          About ScamAlert
         </h1>
         <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
           Pakistan's first community-driven platform to protect families from
@@ -22,7 +22,7 @@
             <h2 class="text-3xl font-bold text-foreground mb-6">Our Mission</h2>
             <p class="text-muted-foreground mb-4">
               Every day, Pakistani families lose money to scams. We created
-              ScamAlert.pk so people can share their experiences and protect
+              ScamAlert so people can share their experiences and protect
               each other.
             </p>
             <p class="text-muted-foreground mb-6">
@@ -61,7 +61,7 @@
             Built by the Community
           </h2>
           <p class="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            ScamAlert.pk is brought to you by <strong>r/PakStartups</strong>,
+            ScamAlert is brought to you by <strong>r/PakStartups</strong>,
             Pakistan's largest Reddit community for entrepreneurs and
             innovators.
           </p>
@@ -94,12 +94,12 @@ definePageMeta({
 });
 
 useHead({
-  title: "About ScamAlert.pk - Protecting Pakistani Families from Fraud",
+  title: "About ScamAlert - Protecting Pakistani Families from Fraud",
   meta: [
     {
       name: "description",
       content:
-        "Learn about ScamAlert.pk, Pakistan's first community-driven scam alert platform. Built by r/PakStartups to protect families from fraud.",
+        "Learn about ScamAlert, Pakistan's first community-driven scam alert platform. Built by r/PakStartups to protect families from fraud.",
     },
   ],
 });

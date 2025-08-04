@@ -49,7 +49,7 @@
               Guide
             </NuxtLink>
             <a
-              href="mailto:contact@scamalert.pk"
+              href="mailto:hello@alwaisy.dev"
               class="text-muted-foreground hover:text-primary transition-colors"
             >
               Contact
@@ -72,7 +72,7 @@
       <!-- Bottom Copyright - Centered -->
       <div class="border-t border-border mt-8 pt-6 text-center">
         <p class="text-xs text-muted-foreground">
-          &copy; {{ new Date().getFullYear() }} ScamAlert.pk • Protecting
+          &copy; {{ new Date().getFullYear() }} ScamAlert • Protecting
           Pakistani families from fraud
         </p>
       </div>
